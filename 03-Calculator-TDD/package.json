@@ -1,0 +1,27 @@
+{
+  "name": "calculatornodejs",
+  "version": "1.0.0",
+  "description": "A basic calculator in nodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "cover": "istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegopm2000/CalculatorNodeJS.git"
+  },
+  "author": "diegopm2000",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegopm2000/CalculatorNodeJS/issues"
+  },
+  "homepage": "https://github.com/diegopm2000/CalculatorNodeJS#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^4.0.1"
+  }
+}
