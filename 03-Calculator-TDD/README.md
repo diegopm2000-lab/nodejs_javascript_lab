@@ -1,4 +1,4 @@
-# Calculator in Node JS
+# Calculator in Node JS (With Unit testing)
 
 __Travis-ci__: [![Travis](https://img.shields.io/travis/diegopm2000/CalculatorNodeJS.svg)]()
 
