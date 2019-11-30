@@ -13,10 +13,14 @@
   },
   "devDependencies": {
     "should": "^7.1.0",
-    "supertest": "^1.0.0"
+    "supertest": "^1.0.0",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
   },
   "scripts": {
     "start": "node app.js",
+    "lint": "node_modules/.bin/eslint 'api/**/*.js' app.js",
     "test": "swagger project test"
   }
 }
