@@ -1,6 +1,6 @@
 # Swagger-UI Helloworld
 
-Swagger-UI Helloworld (usando un fichero descriptor del API REST en formato json)
+Swagger-UI Helloworld (using a REST API descriptor file in JSON format)
 
 ### 1. Install the dependencies
 

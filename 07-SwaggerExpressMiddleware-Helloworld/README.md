@@ -1,8 +1,6 @@
 # Swagger-UI Helloworld
 
-Swagger-UI Helloworld (using a REST API descriptor file in YAML format).
-
-We will use the yamljs npm library to load swagger.yaml file into swaggerDocument and then will pass it to swagger-ui
+NOT WORKING YET! PROBLEM WITH THE ROUTING TO CONTROLLER!!!
 
 ### 1. Install the dependencies
 
