@@ -1,8 +1,8 @@
 ---
 swagger: '2.0'
 info:
-  title: Swagger UI Helloworld
-  description: Swagger UI Helloworld
+  title: Express Open Api Helloworld
+  description: Express Open Api Helloworld
   version: 1.0.0
 host: localhost:3000
 basePath: "/"

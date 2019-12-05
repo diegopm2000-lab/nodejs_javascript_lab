@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: Swagger UI Helloworld
+  description: Swagger UI Helloworld
+  version: 1.0.0
+paths:
+  /add:
+    get:
+      operationId: add
+      summary: Add two numbers (a+b) returning the result
+      description: Add two numbers (a+b) returning the result
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the sum
+          required: true
+          schema:
+            type: integer
+        - name: b
+          in: query
+          description: operand b of the sum
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+servers:
+  - url: http://localhost:3000/api/calculator
