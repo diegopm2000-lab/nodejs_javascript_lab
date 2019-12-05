@@ -1,0 +1,21 @@
+---
+swagger: '2.0'
+info:
+  title: Swagger UI Helloworld
+  description: Swagger UI Helloworld
+  version: 1.0.0
+host: localhost:3000
+basePath: "/"
+schemes:
+- http
+paths:
+  "/helloworld":
+    get:
+      operationId: helloworld
+      summary: Hello World
+      description: Hello World
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
