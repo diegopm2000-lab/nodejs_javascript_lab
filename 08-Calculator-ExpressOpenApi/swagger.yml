@@ -1,29 +1,126 @@
-openapi: 3.0.0
+---
+swagger: '2.0'
 info:
-  title: Swagger UI Helloworld
-  description: Swagger UI Helloworld
+  title: Express Open Api Calculator
+  description: Express Open Api Calculator
   version: 1.0.0
+host: localhost:3000
+basePath: "/api/calculator"
+schemes:
+- http
+consumes:
+  - application/json
+  - application/octet-stream
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+  - application/xml
 paths:
   /add:
     get:
       operationId: add
-      summary: Add two numbers (a+b) returning the result
-      description: Add two numbers (a+b) returning the result
+      summary: Add two numbers (a + b) returning the result
+      description: Add two numbers (a + b) returning the result
       parameters:
         - name: a
           in: query
           description: operand a of the sum
           required: true
-          schema:
-            type: integer
+          type: integer
         - name: b
           in: query
           description: operand b of the sum
           required: true
-          schema:
-            type: integer
+          type: integer
       responses:
-        "200":
-          description: OK
-servers:
-  - url: http://localhost:3000/api/calculator
+        200:
+          $ref: '#/responses/Success'
+        default:
+          $ref: '#/responses/Error'
+  /substract:
+    get:
+      operationId: substract
+      summary: Substract two numbers (a - b) returning the result
+      description: Substract two numbers (a - b) returning the result
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the substraction
+          required: true
+          type: integer
+        - name: b
+          in: query
+          description: operand b of the substraction
+          required: true
+          type: integer
+      responses:
+        200:
+          $ref: '#/responses/Success'
+        default:
+          $ref: '#/responses/Error'
+  /multiply:
+    get:
+      operationId: multiply
+      summary: Multiply two numbers (a * b) returning the result
+      description: Multiply two numbers (a * b) returning the result
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the multiplication
+          required: true
+          type: integer
+        - name: b
+          in: query
+          description: operand b of the multiplication
+          required: true
+          type: integer
+      responses:
+        200:
+          $ref: '#/responses/Success'
+        default:
+          $ref: '#/responses/Error'
+  /division:
+    get:
+      operationId: division
+      summary: Division two numbers (a / b) returning the result
+      description: Division two numbers (a / b) returning the result
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the division
+          required: true
+          type: integer
+        - name: b
+          in: query
+          description: operand b of the division
+          required: true
+          type: integer
+      responses:
+        200:
+          $ref: '#/responses/Success'
+        default:
+          $ref: '#/responses/Error'
+
+# Descriptions of common responses
+responses:
+
+  Success:
+    description: Success Response
+    schema:
+      $ref: '#/definitions/ResultResponse'
+
+  Error:
+    description: Error Response
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+
+definitions:
+  ResultResponse:
+    required:
+      - result
+    properties:
+      message:
+        type: number    
+
+  ErrorResponse:
+    type: object

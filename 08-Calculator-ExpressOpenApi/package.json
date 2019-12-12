@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "express-openapi": "^5.0.0",
-    "express-openapi-validator": "^3.0.2",
+    "express-openapi": "^6.0.0",
     "log-color": "^1.0.0"
   }
 }
