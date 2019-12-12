@@ -1,10 +1,12 @@
 # Express OpenApi Calculator
 
-Express OpenApi Calculator in Open Api v3 (OAS 3).
+Express OpenApi Calculator in Open Api v3.
 
-NOTE: I used this converter to pass swagger.yml from open api v2 (aka swagger 2) to open api v3:
+NOTE: This is an alternative version with these changes applied:
 
-https://mermade.org.uk/openapi-converter
+- logger.js module extracted
+- operations moved to calculator.controller.js
+- swagger-ui added to document and test the api
 
 ### 1. Install the dependencies
 
@@ -17,7 +19,14 @@ $ npm i
 ```shell
 $ npm run start
 ```
-### 3. Check using curl
+
+### 3. Check the OAS 3 Documentation and test the app
+
+use this endpoint in your browser:
+
+http://localhost:3000/api-docs
+
+### 4. Check using curl
 
 Add
 
