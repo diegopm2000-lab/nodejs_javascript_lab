@@ -1,6 +1,10 @@
 # Express OpenApi Calculator
 
-Express OpenApi Calculator in Open Api v2.
+Express OpenApi Calculator in Open Api v3.
+
+NOTE: I used this converter to pass swagger.yml from open api v2 (aka swagger 2) to open api v3:
+
+https://mermade.org.uk/openapi-converter
 
 ### 1. Install the dependencies
 
