@@ -1,6 +1,6 @@
 # Express OpenApi Calculator
 
-Express OpenApi Calculator (using a REST API descriptor file in YAML format).
+Express OpenApi Calculator in Open Api v2.
 
 ### 1. Install the dependencies
 
