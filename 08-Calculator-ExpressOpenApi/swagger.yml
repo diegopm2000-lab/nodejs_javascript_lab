@@ -79,11 +79,11 @@ paths:
           $ref: '#/responses/Success'
         default:
           $ref: '#/responses/Error'
-  /division:
+  /divide:
     get:
-      operationId: division
-      summary: Division two numbers (a / b) returning the result
-      description: Division two numbers (a / b) returning the result
+      operationId: divide
+      summary: Divide two numbers (a / b) returning the result
+      description: Divide two numbers (a / b) returning the result
       parameters:
         - name: a
           in: query

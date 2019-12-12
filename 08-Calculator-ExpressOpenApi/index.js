@@ -48,7 +48,7 @@ initialize({
 
       res.send({ result });
     },
-    division(req, res) {
+    divide(req, res) {
       const { a, b } = req.query;
 
       log.debug(`${MODULE_NAME}:division (IN) --> a: ${a}, b: ${b}`);
