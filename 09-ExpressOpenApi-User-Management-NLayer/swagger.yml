@@ -1,0 +1,149 @@
+openapi: 3.0.0
+info:
+  title: User Management
+  description: User Management - Express Open Api - NLayer
+  version: 0.1.0
+paths:
+  /users:
+    post: 
+      summary: Create a new user
+      tags:
+        - users
+      operationId: createUser 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreationData"
+      responses: 
+        "201": 
+          description: User created OK and returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/UserData"
+
+    get:
+      summary: Get all users
+      tags:
+        - users
+      operationId: getUsers
+      responses: 
+        "200": 
+          description: User created OK and user data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/UserDataList"
+
+  /users/{userId}:
+    get:
+      summary: Get the user by id
+      tags:
+        - users
+      operationId: getUserById
+      parameters:
+        - name: userId
+          in: path
+          description: user Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: User data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/UserData"
+
+    put:
+      summary: Update the user by Id
+      tags:
+        - users
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          description: user Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: User updated OK and data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/UserData"
+
+    delete:
+      summary: Delete the user by Id
+      tags:
+        - users
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: user Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "204": 
+          description: User deleted OK, no data returned
+
+servers:
+  - url: http://localhost:3000/api
+components:
+  responses:
+
+    Error:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    
+    ErrorResponse:
+      type: object
+
+    BasicUserData:
+      type: object 
+      properties: 
+        name: 
+          type: string 
+        surname: 
+          type: string 
+        username: 
+          type: string 
+        email: 
+          type: string 
+        password: 
+          type: string
+        enabled:
+          type: boolean
+
+    UserData:
+      allOf:
+        - $ref: '#/components/schemas/BasicUserData'
+        - type: object
+      properties: 
+        id: 
+          type: string 
+        initDate:
+          type: string
+          format: date-time
+    
+    UserCreationData:
+      allOf:
+        - $ref: '#/components/schemas/BasicUserData'
+        - type: object
+
+    UserDataList:
+      type: array
+      items:
+        $ref: "#/components/schemas/UserData"
