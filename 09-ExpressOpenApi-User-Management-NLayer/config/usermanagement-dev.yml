@@ -1,0 +1,6 @@
+appName: User Management
+description: User Management - Express Open API - OAS 3 - N Layer
+environment: dev
+infrastructure:
+  logger:
+    level: debug
