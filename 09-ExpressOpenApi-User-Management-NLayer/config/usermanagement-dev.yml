@@ -4,3 +4,7 @@ environment: dev
 infrastructure:
   logger:
     level: debug
+  express:
+    servertimeout: 60000 #miliseconds
+    port: 8080
+    enableCors: true

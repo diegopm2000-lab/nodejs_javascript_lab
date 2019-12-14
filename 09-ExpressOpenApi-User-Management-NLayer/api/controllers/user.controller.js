@@ -9,6 +9,7 @@ function updateUser(req, res) {
 }
 
 function getUsers(req, res) {
+  console.log('Entrando en getUsers...');
   // TODO
 }
 

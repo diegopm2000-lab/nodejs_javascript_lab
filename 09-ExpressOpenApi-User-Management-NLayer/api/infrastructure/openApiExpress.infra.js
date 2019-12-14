@@ -11,13 +11,15 @@ const log = require('../infrastructure/logger/applicationLogger.gateway');
 
 const securityHelper = require('../helpers/security.helper');
 
+const userController = require('../controllers/user.controller');
+
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS
 // //////////////////////////////////////////////////////////////////////////////
 
 const MODULE_NAME = '[OpenApiExpress Infra]';
 
-const API_DOCUMENT = '../swagger/swagger.yml';
+const API_DOCUMENT = './api/swagger/swagger.yml';
 
 const DEFAULT_PORT = 8080;
 const DEFAULT_TIMEOUT = 50000;
@@ -41,6 +43,9 @@ async function start(options) {
       // Instance Expresss
       const app = express();
 
+      const appPort = options.port || DEFAULT_PORT;
+      module.exports.server = app.listen(appPort);
+
       // Init Security
       securityHelper.initSecurity(app);
 
@@ -50,15 +55,22 @@ async function start(options) {
         app.use(cors());
       }
 
+      console.log(`---> ${API_DOCUMENT}`);
+
+      // Exposes documentation using swagger-ui-express
+      const swaggerDocument = YAML.load(API_DOCUMENT);
+      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
       // Initialize ExpressOpenApi
       initialize({
         app,
         apiDoc: API_DOCUMENT,
         operations: {
-          add: calculatorController.add,
-          substract: calculatorController.substract,
-          multiply: calculatorController.multiply,
-          divide: calculatorController.divide,
+          createUser: userController.createUser,
+          updateUser: userController.updateUser,
+          getUsers: userController.getUsers,
+          getUserById: userController.getUserById,
+          deleteUser: userController.deleteUser,
         },
       });
 
