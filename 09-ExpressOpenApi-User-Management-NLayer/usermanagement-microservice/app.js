@@ -5,6 +5,7 @@ const log = require('./api/infrastructure/logger/applicationLogger.gateway');
 const loggingBootstrap = require('./api/bootstrap/logging.bootstrap');
 const configBootstrap = require('./api/bootstrap/config.bootstrap');
 const openApiExpressBootstrap = require('./api/bootstrap/openApiExpress.bootstrap');
+const mongooseBootstrap = require('./api/bootstrap/mongoose.bootstrap');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS & PROPERTIES
@@ -52,8 +53,11 @@ async function init() {
     // 3. Logging init
     loggingBootstrap.init();
 
-    // 4. SwaggerExpress Server init
+    // 4. OpenApi Express Server init
     await openApiExpressBootstrap.init(initCfgOptions.port);
+
+    // 5. Mongoose init
+    await mongooseBootstrap.init();
 
     logAppStarted(init.name);
     return true;

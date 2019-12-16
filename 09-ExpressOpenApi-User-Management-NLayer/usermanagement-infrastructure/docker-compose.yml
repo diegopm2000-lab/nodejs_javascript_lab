@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+
+  usermanagement-mongodb:
+    build:
+      context: ${BASE_IMAGES_FOLDER}/mongodb/
+      args:
+        init_file: ${MONGO_INIT_FILE}
+    image: usermanagement-mongodb
+    container_name: usermanagement-mongodb
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+    volumes:
+      - volusermanagement-mongodb:/data/db
+    networks:
+      - usermanagement-network
+
+volumes:
+  volusermanagement-mongodb:
+
+networks:
+  usermanagement-network:
+    name: usermanagement-network
+    driver: bridge
