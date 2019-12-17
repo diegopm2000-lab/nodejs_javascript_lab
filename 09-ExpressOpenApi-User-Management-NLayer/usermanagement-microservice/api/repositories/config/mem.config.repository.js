@@ -26,32 +26,8 @@ function getExpressConfig() {
   return data.infrastructure.express;
 }
 
-function getAuthConfig() {
-  return data.infrastructure.authentication;
-}
-
-function getAuthUsers() {
-  return data.infrastructure.authentication.users;
-}
-
 function getMongoConfig() {
   return data.infrastructure.mongo;
-}
-
-function getRedisConfig() {
-  return data.infrastructure.redis;
-}
-
-function getHLFConfig() {
-  return data.infrastructure.middlewarehlf;
-}
-
-function getBCryptSaltRounds() {
-  return data.infrastructure.authentication.bcryptSaltRounds;
-}
-
-function getAppProperties() {
-  return data.appProperties;
 }
 
 module.exports = {
@@ -59,11 +35,5 @@ module.exports = {
   set,
   getLoggerConfig,
   getExpressConfig,
-  getAuthConfig,
-  getAuthUsers,
   getMongoConfig,
-  getRedisConfig,
-  getHLFConfig,
-  getBCryptSaltRounds,
-  getAppProperties,
 };

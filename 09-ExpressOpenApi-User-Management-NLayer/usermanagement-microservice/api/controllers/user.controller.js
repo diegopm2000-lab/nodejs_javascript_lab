@@ -27,9 +27,18 @@ async function createUser(req, res) {
 
   log.debug(`${MODULE_NAME}:${createUser.name} (IN) -> body: ${JSON.stringify(body)}`);
 
+  const newUserParams = {
+    name: body.name,
+    surname: body.surname,
+    username: body.username,
+    email: body.email,
+    password: body.password,
+    enabled: body.enabled,
+  }
+
   // TODO extraer del body los parámetros
 
-  const result = await userService.createUser();
+  const result = await userService.createUser(newUserParams);
 
   log.debug(`${MODULE_NAME}:${createUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
   res.json(result);

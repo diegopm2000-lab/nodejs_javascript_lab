@@ -5,12 +5,11 @@ const express = require('express');
 const { initialize } = require('express-openapi');
 
 const swaggerUi = require('swagger-ui-express');
+const bodyParser = require('body-parser');
 const YAML = require('yamljs');
 
 const log = require('../infrastructure/logger/applicationLogger.gateway');
-
 const securityHelper = require('../helpers/security.helper');
-
 const userController = require('../controllers/user.controller');
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -22,7 +21,8 @@ const MODULE_NAME = '[OpenApiExpress Infra]';
 const API_DOCUMENT = './api/swagger/swagger.yml';
 
 const DEFAULT_PORT = 8080;
-const DEFAULT_TIMEOUT = 50000;
+const DEFAULT_REQUEST_TIMEOUT = 50000;
+const DEFAULT_SOCKET_TIMEOUT = 300000;
 
 // //////////////////////////////////////////////////////////////////////////////
 // PROPERTIES
@@ -55,8 +55,6 @@ async function start(options) {
         app.use(cors());
       }
 
-      console.log(`---> ${API_DOCUMENT}`);
-
       // Exposes documentation using swagger-ui-express
       const swaggerDocument = YAML.load(API_DOCUMENT);
       app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -65,6 +63,9 @@ async function start(options) {
       initialize({
         app,
         apiDoc: API_DOCUMENT,
+        consumesMiddleware: {
+          'application/json': bodyParser.json(),
+        },
         operations: {
           createUser: userController.createUser,
           updateUser: userController.updateUser,
@@ -72,6 +73,27 @@ async function start(options) {
           getUserById: userController.getUserById,
           deleteUser: userController.deleteUser,
         },
+      });
+
+      // Socket timeout
+      module.exports.server.timeout = DEFAULT_SOCKET_TIMEOUT;
+
+      // Request timeout
+      const serverTimeOut = options.servertimeout || DEFAULT_REQUEST_TIMEOUT;
+      module.exports.server.setTimeout(serverTimeOut);
+      log.info(`${MODULE_NAME} ${start.name} (MID) --> Express Server timeout set to: ${serverTimeOut} ms`);
+
+      // Enable CORS
+      if (options.enableCors) {
+        log.info(`${MODULE_NAME} ${start.name} (MID) --> Enabling CORS`);
+        app.use(cors());
+      }
+
+      // Error Handler
+      // eslint-disable-next-line no-unused-vars
+      app.use((err, req, res, next) => {
+        log.debug(`${MODULE_NAME}:ErrorHandler (ERROR) --> err: ${JSON.stringify(err)}`);
+        res.status(err.status).json(err);
       });
 
       log.info(`${MODULE_NAME} ${start.name} (OUT) --> App Server started at port: ${appPort} and Running OK!`);
@@ -86,7 +108,6 @@ async function start(options) {
 
 function stop() {
   log.info(`${MODULE_NAME} ${stop.name} (IN) --> no params`);
-
   module.exports.server.close(() => { log.info(`${MODULE_NAME} ${stop.name} (OUT) --> App Server stopped`); });
 }
 

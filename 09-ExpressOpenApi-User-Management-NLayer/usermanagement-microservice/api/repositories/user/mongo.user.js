@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(mongooseHidden); // to hidden _id and __v in query results
 
+// eslint-disable-next-line func-names
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = {
