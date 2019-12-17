@@ -37,7 +37,6 @@ initialize({
 });
 
 // Error Handler - necessary to handle the application errors
-
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   log.debug(`${MODULE_NAME}:ErrorHandler (ERROR) --> err: ${JSON.stringify(err)}`);
@@ -45,9 +44,7 @@ app.use((err, req, res, next) => {
 });
 
 // Exposes documentation using swagger-ui-express
-
 const swaggerDocument = YAML.load(API_DOCUMENT);
-
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(3000);
