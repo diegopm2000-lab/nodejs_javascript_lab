@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+
+  auth-mongodb:
+    build:
+      context: ${BASE_IMAGES_FOLDER}/mongodb/
+      args:
+        init_file: ${MONGO_INIT_FILE}
+    image: auth-mongodb
+    container_name: auth-mongodb
+    ports:
+      - "27019:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+    volumes:
+      - volauth-mongodb:/data/db
+    networks:
+      - auth-network
+
+volumes:
+  volauth-mongodb:
+
+networks:
+  auth-network:
+    name: auth-network
+    driver: bridge

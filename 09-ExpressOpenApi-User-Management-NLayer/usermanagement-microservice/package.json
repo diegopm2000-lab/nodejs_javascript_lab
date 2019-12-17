@@ -1,7 +1,7 @@
 {
-  "name": "07-openapiexpress",
+  "name": "usernamagement",
   "version": "1.0.0",
-  "description": "Open Api Express Helloworld",
+  "description": "UserManagement Open API Express - NLayer - OAS 3",
   "main": "index.js",
   "scripts": {
     "lint": "node_modules/.bin/eslint *.js",
