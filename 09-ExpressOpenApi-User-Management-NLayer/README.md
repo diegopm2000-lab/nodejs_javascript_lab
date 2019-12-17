@@ -8,13 +8,21 @@ User Management Microservice using Express Open Api & OAS 3
 $ npm i
 ```
 
-### 2. Start the Express Server
+### 2. Start the mongo service
+
+Go to usermanagement-infrastructure folder and execute:
+
+```shell
+$ docker-compose up -d
+```
+
+### 3. Start the Express Server
 
 ```shell
 $ npm run start
 ```
 
-### 3. Check the OAS 3 Documentation and test the app
+### 4. Check the OAS 3 Documentation and test the app
 
 use this endpoint in your browser:
 
