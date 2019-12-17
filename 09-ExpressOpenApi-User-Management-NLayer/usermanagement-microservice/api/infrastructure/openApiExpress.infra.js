@@ -55,10 +55,6 @@ async function start(options) {
         app.use(cors());
       }
 
-      // Exposes documentation using swagger-ui-express
-      const swaggerDocument = YAML.load(API_DOCUMENT);
-      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
       // Initialize ExpressOpenApi
       initialize({
         app,
@@ -95,6 +91,10 @@ async function start(options) {
         log.debug(`${MODULE_NAME}:ErrorHandler (ERROR) --> err: ${JSON.stringify(err)}`);
         res.status(err.status).json(err);
       });
+
+      // Exposes documentation using swagger-ui-express
+      const swaggerDocument = YAML.load(API_DOCUMENT);
+      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
       log.info(`${MODULE_NAME} ${start.name} (OUT) --> App Server started at port: ${appPort} and Running OK!`);
 

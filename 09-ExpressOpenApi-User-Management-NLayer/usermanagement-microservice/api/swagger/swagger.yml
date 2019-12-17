@@ -63,6 +63,12 @@ paths:
       tags:
         - users
       operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateData"
       parameters:
         - name: userId
           in: path
@@ -139,6 +145,11 @@ components:
           format: date-time
     
     UserCreationData:
+      allOf:
+        - $ref: '#/components/schemas/BasicUserData'
+        - type: object
+
+    UserUpdateData:
       allOf:
         - $ref: '#/components/schemas/BasicUserData'
         - type: object

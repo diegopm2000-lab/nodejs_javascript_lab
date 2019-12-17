@@ -49,8 +49,38 @@ async function createUser(newUser) {
   return result;
 }
 
+async function updateUser(id, userData) {
+  log.info(`${MODULE_NAME}:${updateUser.name} (IN) -> id: ${id}, userData: ${JSON.stringify(userData)}`);
+
+  const result = await User.findOneAndUpdate(
+    { id },
+    { $set: userData },
+    { new: true },
+  );
+
+  log.info(`${MODULE_NAME}:${updateUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  return result;
+}
+
+async function deleteUser(id) {
+  log.debug(`${MODULE_NAME}:${deleteUser.name} (IN) -> id: ${id}`);
+
+  const innerResult = await User.deleteOne({ id });
+  log.debug(`${MODULE_NAME}:${deleteUser.name} (MID) -> innerResult: ${JSON.stringify(innerResult)}`);
+
+  let result = false;
+  if (innerResult.ok === 1 && innerResult.deletedCount === 1) {
+    result = true;
+  }
+
+  log.debug(`${MODULE_NAME}:${deleteUser.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
 module.exports = {
   getUsers,
   getUserByFilter,
   createUser,
+  updateUser,
+  deleteUser,
 };

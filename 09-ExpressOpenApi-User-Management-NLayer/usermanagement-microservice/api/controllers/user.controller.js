@@ -10,6 +10,22 @@ const userService = require('../services/user.service');
 const MODULE_NAME = '[User Controller]';
 
 // //////////////////////////////////////////////////////////////////////////////
+// PRIVATE METHODS
+// //////////////////////////////////////////////////////////////////////////////
+
+function buildUserParams(objIN) {
+  const resultUserParams = {
+    name: objIN.name,
+    surname: objIN.surname,
+    username: objIN.username,
+    email: objIN.email,
+    password: objIN.password,
+    enabled: objIN.enabled,
+  };
+  return resultUserParams;
+}
+
+// //////////////////////////////////////////////////////////////////////////////
 // PUBLIC METHODS
 // //////////////////////////////////////////////////////////////////////////////
 
@@ -22,21 +38,21 @@ async function getUsers(req, res) {
   res.json(result);
 }
 
+async function getUserById(req, res) {
+  const { userId } = req.params;
+  log.debug(`${MODULE_NAME}:${getUsers.name} (IN) -> userId: ${userId}`);
+
+  const result = await userService.getUserById(userId);
+
+  log.debug(`${MODULE_NAME}:${getUsers.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
+}
+
 async function createUser(req, res) {
   const { body } = req;
-
   log.debug(`${MODULE_NAME}:${createUser.name} (IN) -> body: ${JSON.stringify(body)}`);
 
-  const newUserParams = {
-    name: body.name,
-    surname: body.surname,
-    username: body.username,
-    email: body.email,
-    password: body.password,
-    enabled: body.enabled,
-  }
-
-  // TODO extraer del body los parámetros
+  const newUserParams = buildUserParams(body);
 
   const result = await userService.createUser(newUserParams);
 
@@ -44,28 +60,34 @@ async function createUser(req, res) {
   res.json(result);
 }
 
-function updateUser(req, res) {
-  // TODO
-  console.log('Entrando en updateUser...');
-  res.json({ rresult: 'Not built yet!' });
+async function updateUser(req, res) {
+  const { body } = req;
+  const { userId } = req.params;
+
+  log.debug(`${MODULE_NAME}:${updateUser.name} (IN) -> userId: ${userId}, body: ${JSON.stringify(body)}`);
+
+  const userParams = buildUserParams(body);
+
+  const result = await userService.updateUser(userId, userParams);
+
+  log.debug(`${MODULE_NAME}:${updateUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
 }
 
-function getUserById(req, res) {
-  // TODO
-  console.log('Entrando en getUserById...');
-  res.json({ rresult: 'Not built yet!' });
-}
+async function deleteUser(req, res) {
+  const { userId } = req.params;
+  log.debug(`${MODULE_NAME}:${getUsers.name} (IN) -> userId: ${userId}`);
 
-function deleteUser(req, res) {
-  // TODO
-  console.log('Entrando en deleteUser...');
-  res.json({ rresult: 'Not built yet!' });
+  const result = await userService.deleteUser(userId);
+
+  log.debug(`${MODULE_NAME}:${updateUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json({ result });
 }
 
 module.exports = {
-  createUser,
-  updateUser,
   getUsers,
   getUserById,
+  createUser,
+  updateUser,
   deleteUser,
 };
