@@ -40,6 +40,20 @@ async function authenticate(username, passwd) {
   return result;
 }
 
+async function authorize(username, endpoint) {
+  log.debug(`${MODULE_NAME}:${authorize.name} (IN) -> username: ${username}, endpoint: ${endpoint}`);
+
+  // TODO implement the authorization using the RBAC system
+  return new Promise((resolve) => {
+    if (username === 'baduser') {
+      resolve(false);
+    } else {
+      resolve(true);
+    }
+  });
+}
+
 module.exports = {
   authenticate,
+  authorize,
 };

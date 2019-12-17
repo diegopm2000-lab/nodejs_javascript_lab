@@ -65,6 +65,7 @@ async function start(options) {
         },
         operations: {
           authenticate: authController.authenticate,
+          authorize: authController.authorize,
           createUser: userController.createUser,
           updateUser: userController.updateUser,
           getUsers: userController.getUsers,
