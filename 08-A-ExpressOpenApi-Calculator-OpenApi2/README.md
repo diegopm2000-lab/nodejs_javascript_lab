@@ -1,6 +1,6 @@
 # Express OpenApi Calculator
 
-Express OpenApi Calculator in Open Api v2.
+Express OpenApi Calculator in Open Api v2 (OAS 2).
 
 ### 1. Install the dependencies
 
