@@ -17,18 +17,15 @@ __group__
 __role__
 - roleId: String
 - name: String
-- endpoints: <<list of endpoint's>>
+- endpoints: <<list of endpointId's>>
 
 __endpoint__
+- endpointId: String
 - method: String (p.e: GET, POST, PUT, DELETE, PATCH, ...)
 - url: String (p.e: /api/users/{userId})
 - urlregex: String (p.e: /api/users/[^/?#])
 
 We will use the urlregex to match the url passed as parameter to check if an authenticated user has permission over an endpoint
-
-__Details over the implementation__:
-
-We will use MongoDB as Database, and we will create three collections: users, groups and roles. The endpoints will be introduced directly into the roles collection.
 
 ### 1. Install the dependencies
 

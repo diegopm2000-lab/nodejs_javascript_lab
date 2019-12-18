@@ -1,9 +1,14 @@
 openapi: 3.0.0
 info:
-  title: User Management
-  description: User Management - Express Open Api - NLayer
+  title: RBAC Management
+  description: RBAC Management - Express Open Api - NLayer
   version: 0.1.0
 paths:
+
+  # ##################################################################
+  # Users
+  # ##################################################################
+
   /users:
     post: 
       summary: Create a new user
@@ -100,6 +105,18 @@ paths:
         "204": 
           description: User deleted OK, no data returned
 
+  # ##################################################################
+  # Groups
+  # ##################################################################
+
+  # ##################################################################
+  # Roles
+  # ##################################################################
+
+  # ##################################################################
+  # Endpoints
+  # ##################################################################
+
 servers:
   - url: http://localhost:8080/api
 components:
@@ -117,21 +134,23 @@ components:
     ErrorResponse:
       type: object
 
+    GroupIdData:
+      type: object
+      properties:
+        id:
+          type: string
+
     BasicUserData:
       type: object 
       properties: 
-        name: 
-          type: string 
-        surname: 
-          type: string 
-        username: 
-          type: string 
-        email: 
-          type: string 
         password: 
           type: string
         enabled:
           type: boolean
+        groups:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupIdData"
 
     UserData:
       allOf:
