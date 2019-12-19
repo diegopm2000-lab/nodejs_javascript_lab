@@ -14,15 +14,14 @@ const MODULE_NAME = '[User Controller]';
 // //////////////////////////////////////////////////////////////////////////////
 
 function buildUserParams(objIN) {
-  const resultUserParams = {
-    name: objIN.name,
-    surname: objIN.surname,
+  const result = {
     username: objIN.username,
-    email: objIN.email,
     password: objIN.password,
     enabled: objIN.enabled,
+    initDate: objIN.initDate,
+    groups: objIN.groups,
   };
-  return resultUserParams;
+  return result;
 }
 
 // //////////////////////////////////////////////////////////////////////////////

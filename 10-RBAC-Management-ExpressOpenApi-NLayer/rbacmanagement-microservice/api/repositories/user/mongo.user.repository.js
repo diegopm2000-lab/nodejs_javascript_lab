@@ -1,8 +1,7 @@
 // mongo.user.repository.js
 
-const mongoose = require('mongoose');
-
 const log = require('../../infrastructure/logger/applicationLogger.gateway');
+const mongoHelper = require('../../helpers/mongoose.helper');
 const { User } = require('./mongo.user'); // User Schema
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -18,14 +17,7 @@ const MODULE_NAME = '[Mongo User Repository]';
 async function getUsers() {
   log.debug(`${MODULE_NAME}:${getUsers.name} (IN) -> params: no params`);
 
-  // Get verbose for queries -- For testing
-  mongoose.set('debug', true);
-
-  const query = User.find({});
-
-  // Executing query
-  const result = await query.exec();
-
+  const result = await mongoHelper.getAll(User);
 
   log.debug(`${MODULE_NAME}:${getUsers.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -34,7 +26,7 @@ async function getUsers() {
 async function getUserByFilter(filter) {
   log.debug(`${MODULE_NAME}:${getUserByFilter.name} (IN) -> filter: ${JSON.stringify(filter)}`);
 
-  const result = await User.findOne(filter);
+  const result = await mongoHelper.getByFilter(User, filter);
 
   log.debug(`${MODULE_NAME}:${getUserByFilter.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -43,7 +35,7 @@ async function getUserByFilter(filter) {
 async function createUser(newUser) {
   log.debug(`${MODULE_NAME}:${createUser.name} (IN) -> newUser: ${JSON.stringify(newUser)}`);
 
-  const result = await User.create(newUser);
+  const result = await mongoHelper.create(User, newUser);
 
   log.info(`${MODULE_NAME}:${createUser.name} (OUT) -> result: ${JSON.stringify(newUser)}`);
   return result;
@@ -52,11 +44,7 @@ async function createUser(newUser) {
 async function updateUser(id, userData) {
   log.info(`${MODULE_NAME}:${updateUser.name} (IN) -> id: ${id}, userData: ${JSON.stringify(userData)}`);
 
-  const result = await User.findOneAndUpdate(
-    { id },
-    { $set: userData },
-    { new: true },
-  );
+  const result = await mongoHelper.update(User, id, userData);
 
   log.info(`${MODULE_NAME}:${updateUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -65,13 +53,7 @@ async function updateUser(id, userData) {
 async function deleteUser(id) {
   log.debug(`${MODULE_NAME}:${deleteUser.name} (IN) -> id: ${id}`);
 
-  const innerResult = await User.deleteOne({ id });
-  log.debug(`${MODULE_NAME}:${deleteUser.name} (MID) -> innerResult: ${JSON.stringify(innerResult)}`);
-
-  let result = false;
-  if (innerResult.ok === 1 && innerResult.deletedCount === 1) {
-    result = true;
-  }
+  const result = await mongoHelper.deleteById(User, id);
 
   log.debug(`${MODULE_NAME}:${deleteUser.name} (OUT) -> result: ${result}`);
   return result;

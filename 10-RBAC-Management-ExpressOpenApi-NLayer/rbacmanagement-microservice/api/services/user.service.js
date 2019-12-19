@@ -70,10 +70,10 @@ async function updateUser(userId, updateUserDataIN) {
   log.info(`${MODULE_NAME}:${updateUser.name} (IN) -> userId: ${userId}, updateUserDataIN: ${JSON.stringify(updateUserDataIN)}`);
 
   // Check if there NOT exists an user with the same username and distinct userId
-  const userFound = await userRepository.getUserByFilter({ username: updateUserDataIN.username });
-  log.info(`${MODULE_NAME}:${createUser.name} (MID) -> userFound: ${JSON.stringify(userFound)}`);
-  if (userFound && userFound.id !== userId) {
-    log.error(`${MODULE_NAME}:${createUser.name} (ERROR) -> error: ${ERROR_USER_EXISTS_WITH_SAME_USERNAME}`);
+  const userFound = await userRepository.getUserByFilter({ username: updateUserDataIN.username, id: { $ne: userId } });
+  log.info(`${MODULE_NAME}:${updateUser.name} (MID) -> userFound: ${JSON.stringify(userFound)}`);
+  if (userFound) {
+    log.error(`${MODULE_NAME}:${updateUser.name} (ERROR) -> error: ${ERROR_USER_EXISTS_WITH_SAME_USERNAME}`);
     throw new Error(ERROR_USER_EXISTS_WITH_SAME_USERNAME);
   }
 

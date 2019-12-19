@@ -11,6 +11,7 @@ const YAML = require('yamljs');
 const log = require('../infrastructure/logger/applicationLogger.gateway');
 const securityHelper = require('../helpers/security.helper');
 const userController = require('../controllers/user.controller');
+const groupController = require('../controllers/group.controller');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS
@@ -63,11 +64,18 @@ async function start(options) {
           'application/json': bodyParser.json(),
         },
         operations: {
+          // Users
           createUser: userController.createUser,
           updateUser: userController.updateUser,
           getUsers: userController.getUsers,
           getUserById: userController.getUserById,
           deleteUser: userController.deleteUser,
+          // Groups
+          createGroup: groupController.createGroup,
+          updateGroup: groupController.updateGroup,
+          getGroups: groupController.getGroups,
+          getGroupById: groupController.getGroupById,
+          deleteGroup: groupController.deleteGroup,
         },
       });
 

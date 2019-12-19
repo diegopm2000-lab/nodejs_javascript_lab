@@ -109,6 +109,102 @@ paths:
   # Groups
   # ##################################################################
 
+  /groups:
+    post: 
+      summary: Create a new group
+      tags:
+        - groups
+      operationId: createGroup 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupCreationData"
+      responses: 
+        "201": 
+          description: Group created OK and returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/GroupData"
+
+    get:
+      summary: Get all groups
+      tags:
+        - groups
+      operationId: getGroups
+      responses: 
+        "200": 
+          description: Group created OK and group data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/GroupDataList"
+
+  /groups/{groupId}:
+    get:
+      summary: Get the group by id
+      tags:
+        - groups
+      operationId: getGroupById
+      parameters:
+        - name: groupId
+          in: path
+          description: group Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Group data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/GroupData"
+
+    put:
+      summary: Update the group by Id
+      tags:
+        - groups
+      operationId: updateGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupUpdateData"
+      parameters:
+        - name: groupId
+          in: path
+          description: group Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Group updated OK and data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/GroupData"
+
+    delete:
+      summary: Delete the group by Id
+      tags:
+        - groups
+      operationId: deleteGroup
+      parameters:
+        - name: groupId
+          in: path
+          description: group Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "204": 
+          description: Group deleted OK, no data returned
+
   # ##################################################################
   # Roles
   # ##################################################################
@@ -134,11 +230,7 @@ components:
     ErrorResponse:
       type: object
 
-    GroupIdData:
-      type: object
-      properties:
-        id:
-          type: string
+    # Users      
 
     BasicUserData:
       type: object 
@@ -179,3 +271,52 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/UserData"
+
+    # Groups  
+
+    GroupIdData:
+      type: object
+      properties:
+        id:
+          type: string
+
+    BasicGroupData:
+      type: object 
+      properties: 
+        name:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoleIdData"
+
+    GroupData:
+      allOf:
+        - $ref: '#/components/schemas/BasicGroupData'
+        - type: object
+      properties: 
+        id: 
+          type: string
+    
+    GroupCreationData:
+      allOf:
+        - $ref: '#/components/schemas/BasicGroupData'
+        - type: object
+
+    GroupUpdateData:
+      allOf:
+        - $ref: '#/components/schemas/BasicGroupData'
+        - type: object
+
+    GroupDataList:
+      type: array
+      items:
+        $ref: "#/components/schemas/GroupData"
+
+    # Roles  
+
+    RoleIdData:
+      type: object
+      properties:
+        id:
+          type: string

@@ -2,27 +2,27 @@
 
 RBAC Management Microservice using Express Open Api & OAS 3
 
-The RBAC model is composed by three main components:
+The RBAC model is composed by these main components:
 
 __user__:
-- userId: String
+- id: String
 - username: String
 - enabled: boolean
-- groups: <<list of groupId's>>
+- groups: <<list of group Id's>>
 - password: <<encrypted password>>
 
 __group__
-- groupId: String
+- id: String
 - name: String
-- roles: <<list of roleId's>>
+- roles: <<list of role Id's>>
 
 __role__
-- roleId: String
+- id: String
 - name: String
-- endpoints: <<list of endpointId's>>
+- endpoints: <<list of endpoint Id's>>
 
 __endpoint__
-- endpointId: String
+- id: String
 - method: String (p.e: GET, POST, PUT, DELETE, PATCH, ...)
 - url: String (p.e: /api/users/{userId})
 - urlregex: String (p.e: /api/users/[^/?#])
