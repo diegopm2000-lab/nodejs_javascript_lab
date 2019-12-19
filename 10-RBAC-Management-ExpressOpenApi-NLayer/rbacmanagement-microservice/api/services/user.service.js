@@ -52,12 +52,13 @@ async function createUser(newUserIN) {
   const newUser = JSON.parse(JSON.stringify(newUserIN));
 
   // Generate unique Id
-  const id = `user-${uniqid()}`;
-  newUser.id = id;
+  newUser.id = `user-${uniqid()}`;
+
+  // Generate initDate
+  newUser.initDate = new Date().toISOString();
 
   // Encrypt the password
-  const encryptedPassword = bcrypt.hashSync(newUserIN.password, BCRYPT_SALT_ROUNDS);
-  newUser.password = encryptedPassword;
+  newUser.password = bcrypt.hashSync(newUserIN.password, BCRYPT_SALT_ROUNDS);
 
   const result = await userRepository.createUser(newUser);
 

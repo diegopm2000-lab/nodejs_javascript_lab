@@ -11,7 +11,7 @@ export NODE_CONFIG_SPRINGCFG_ENDPOINT="NONE"
 env | grep '^NODE_CONFIG_SPRINGCFG_ENDPOINT='
 
 # Configuration File
-export NODE_CONFIG_FILE="usermanagement-dev.yml"
+export NODE_CONFIG_FILE="rbacmanagement-dev.yml"
 env | grep '^NODE_CONFIG_FILE='
 
 # App Port

@@ -143,10 +143,15 @@ components:
     BasicUserData:
       type: object 
       properties: 
-        password: 
+        username:
+          type: string
+        password:
           type: string
         enabled:
           type: boolean
+        initDate:
+          type: string
+          format: date-time
         groups:
           type: array
           items:
@@ -158,10 +163,7 @@ components:
         - type: object
       properties: 
         id: 
-          type: string 
-        initDate:
           type: string
-          format: date-time
     
     UserCreationData:
       allOf:

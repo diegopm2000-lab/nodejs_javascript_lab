@@ -1,5 +1,5 @@
-appName: User Management
-description: User Management - Express Open API - OAS 3 - N Layer
+appName: RBAC Management
+description: RBAC Management - Express Open API - OAS 3 - N Layer
 environment: dev
 infrastructure:
   logger:
@@ -9,6 +9,6 @@ infrastructure:
     port: 8080
     enableCors: true
   mongo:
-    mongoURL: mongodb://admin:admin@localhost:27018
-    database: usermanagementDB
+    mongoURL: mongodb://admin:admin@localhost:27019
+    database: rbacmanagementDB
     reconnectTime: 20000 #miliseconds
