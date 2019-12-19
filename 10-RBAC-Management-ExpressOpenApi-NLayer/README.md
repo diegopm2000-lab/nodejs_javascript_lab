@@ -23,6 +23,8 @@ __role__
 
 __endpoint__
 - id: String
+- name: String
+- description: String
 - method: String (p.e: GET, POST, PUT, DELETE, PATCH, ...)
 - url: String (p.e: /api/users/{userId})
 - urlregex: String (p.e: /api/users/[^/?#])

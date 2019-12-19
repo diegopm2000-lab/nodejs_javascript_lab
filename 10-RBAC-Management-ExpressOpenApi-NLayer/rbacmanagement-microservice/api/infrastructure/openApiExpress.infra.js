@@ -12,6 +12,8 @@ const log = require('../infrastructure/logger/applicationLogger.gateway');
 const securityHelper = require('../helpers/security.helper');
 const userController = require('../controllers/user.controller');
 const groupController = require('../controllers/group.controller');
+const roleController = require('../controllers/role.controller');
+const endpointController = require('../controllers/endpoint.controller');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS
@@ -76,6 +78,18 @@ async function start(options) {
           getGroups: groupController.getGroups,
           getGroupById: groupController.getGroupById,
           deleteGroup: groupController.deleteGroup,
+          // Roles
+          createRole: roleController.createRole,
+          updateRole: roleController.updateRole,
+          getRoles: roleController.getRoles,
+          getRoleById: roleController.getRoleById,
+          deleteRole: roleController.deleteRole,
+          // Endpoints
+          createEndpoint: endpointController.createEndpoint,
+          updateEndpoint: endpointController.updateEndpoint,
+          getEndpoints: endpointController.getEndpoints,
+          getEndpointById: endpointController.getEndpointById,
+          deleteEndpoint: endpointController.deleteEndpoint,
         },
       });
 

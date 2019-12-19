@@ -209,9 +209,201 @@ paths:
   # Roles
   # ##################################################################
 
+  /roles:
+    post: 
+      summary: Create a new role
+      tags:
+        - roles
+      operationId: createRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoleCreationData"
+      responses: 
+        "201": 
+          description: Role created OK and returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/RoleData"
+
+    get:
+      summary: Get all roles
+      tags:
+        - roles
+      operationId: getRoles
+      responses: 
+        "200": 
+          description: Role created OK and role data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/RoleDataList"
+
+  /roles/{roleId}:
+    get:
+      summary: Get the role by id
+      tags:
+        - roles
+      operationId: getRoleById
+      parameters:
+        - name: roleId
+          in: path
+          description: role Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Role data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/RoleData"
+
+    put:
+      summary: Update the role by Id
+      tags:
+        - roles
+      operationId: updateRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoleUpdateData"
+      parameters:
+        - name: roleId
+          in: path
+          description: role Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Role updated OK and data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/RoleData"
+
+    delete:
+      summary: Delete the role by Id
+      tags:
+        - roles
+      operationId: deleteRole
+      parameters:
+        - name: roleId
+          in: path
+          description: role Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "204": 
+          description: Role deleted OK, no data returned
+
   # ##################################################################
   # Endpoints
   # ##################################################################
+
+  /endpoints:
+    post: 
+      summary: Create a new endpoint
+      tags:
+        - endpoints
+      operationId: createEndpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EndpointCreationData"
+      responses: 
+        "201": 
+          description: Endpoint created OK and returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/EndpointData"
+
+    get:
+      summary: Get all endpoints
+      tags:
+        - endpoints
+      operationId: getEndpoints
+      responses: 
+        "200": 
+          description: Endpoint created OK and endpoint data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/EndpointDataList"
+
+  /endpoints/{endpointId}:
+    get:
+      summary: Get the endpoint by id
+      tags:
+        - endpoints
+      operationId: getEndpointById
+      parameters:
+        - name: endpointId
+          in: path
+          description: endpoint Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Endpoint data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/EndpointData"
+
+    put:
+      summary: Update the endpoint by Id
+      tags:
+        - endpoints
+      operationId: updateEndpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EndpointUpdateData"
+      parameters:
+        - name: endpointId
+          in: path
+          description: endpoint Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Endpoint updated OK and data returned
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/EndpointData"
+
+    delete:
+      summary: Delete the endpoint by Id
+      tags:
+        - endpoints
+      operationId: deleteEndpoint
+      parameters:
+        - name: endpointId
+          in: path
+          description: endpoint Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "204": 
+          description: Endpoint deleted OK, no data returned
 
 servers:
   - url: http://localhost:8080/api
@@ -320,3 +512,81 @@ components:
       properties:
         id:
           type: string
+
+    BasicRoleData:
+      type: object 
+      properties: 
+        name:
+          type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/EndpointIdData"
+
+    RoleData:
+      allOf:
+        - $ref: '#/components/schemas/BasicRoleData'
+        - type: object
+      properties: 
+        id: 
+          type: string
+    
+    RoleCreationData:
+      allOf:
+        - $ref: '#/components/schemas/BasicRoleData'
+        - type: object
+
+    RoleUpdateData:
+      allOf:
+        - $ref: '#/components/schemas/BasicRoleData'
+        - type: object
+
+    RoleDataList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RoleData"
+
+    # Endpoints  
+
+    EndpointIdData:
+      type: object
+      properties:
+        id:
+          type: string
+
+    BasicEndpointData:
+      type: object 
+      properties: 
+        name:
+          type: string
+        description:
+          type: string
+        method:
+          type: string
+        url:
+          type: string
+        urlregex:
+          type: string
+
+    EndpointData:
+      allOf:
+        - $ref: '#/components/schemas/BasicEndpointData'
+        - type: object
+      properties: 
+        id: 
+          type: string
+    
+    EndpointCreationData:
+      allOf:
+        - $ref: '#/components/schemas/BasicEndpointData'
+        - type: object
+
+    EndpointUpdateData:
+      allOf:
+        - $ref: '#/components/schemas/BasicEndpointData'
+        - type: object
+
+    EndpointDataList:
+      type: array
+      items:
+        $ref: "#/components/schemas/EndpointData"
