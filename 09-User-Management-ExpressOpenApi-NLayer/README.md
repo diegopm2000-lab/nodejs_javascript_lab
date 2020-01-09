@@ -1,8 +1,12 @@
 # User Management - Express Open API - OAS 3
 
-User Management Microservice using Express Open Api & OAS 3
+User Management Microservice using Express Open Api & OAS 3.
+
+Is only a basic implementation of a user management with the typical CRUD operations persisted in a dockerized MongoDB
 
 ### 1. Install the dependencies
+
+Go to usermanagement-microservice folder and execute:
 
 ```shell
 $ npm i
