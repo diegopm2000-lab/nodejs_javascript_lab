@@ -7,8 +7,8 @@ paths:
   /add:
     get:
       operationId: add
-      summary: Add two numbers (a + b) returning the result
-      description: Add two numbers (a + b) returning the result
+      summary: Add two numbers
+      description: Add two numbers
       parameters:
         - name: a
           in: query
@@ -30,8 +30,8 @@ paths:
   /substract:
     get:
       operationId: substract
-      summary: Substract two numbers (a - b) returning the result
-      description: Substract two numbers (a - b) returning the result
+      summary: Substract two numbers
+      description: Substract two numbers
       parameters:
         - name: a
           in: query
@@ -53,8 +53,8 @@ paths:
   /multiply:
     get:
       operationId: multiply
-      summary: Multiply two numbers (a * b) returning the result
-      description: Multiply two numbers (a * b) returning the result
+      summary: Multiply two numbers
+      description: Multiply two numbers
       parameters:
         - name: a
           in: query
@@ -76,8 +76,8 @@ paths:
   /divide:
     get:
       operationId: divide
-      summary: Divide two numbers (a / b) returning the result
-      description: Divide two numbers (a / b) returning the result
+      summary: Divide two numbers
+      description: Divide two numbers
       parameters:
         - name: a
           in: query
