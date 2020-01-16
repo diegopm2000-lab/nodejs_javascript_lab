@@ -105,6 +105,56 @@ paths:
         "204": 
           description: User deleted OK, no data returned
 
+  /users/{userId}/groups:
+    post: 
+      summary: add a group to the user
+      tags:
+        - users
+      operationId: addGroupToUser
+      parameters:
+        - name: userId
+          in: path
+          description: user Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddGroupData"
+      responses: 
+        "201": 
+          description: Group Added and user data returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/UserData"
+
+  /users/{userId}/groups/{groupId}:
+    delete:
+      summary: Delete the group from the user
+      tags:
+        - users
+      operationId: deleteGroupFromUser
+      parameters:
+        - name: userId
+          in: path
+          description: user Id
+          required: true
+          schema:
+            type: string
+        - name: groupId
+          in: path
+          description: group Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "204": 
+          description: User deleted OK, no data returned
+
   # ##################################################################
   # Groups
   # ##################################################################
@@ -463,6 +513,12 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/UserData"
+
+    AddGroupData:
+      type: object
+      properties: 
+        groupId:
+          type: string
 
     # Groups  
 

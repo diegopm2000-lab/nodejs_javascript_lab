@@ -72,6 +72,8 @@ async function start(options) {
           getUsers: userController.getUsers,
           getUserById: userController.getUserById,
           deleteUser: userController.deleteUser,
+          addGroupToUser: userController.addGroupToUser,
+          deleteGroupFromUser: userController.deleteGroupFromUser,
           // Groups
           createGroup: groupController.createGroup,
           updateGroup: groupController.updateGroup,

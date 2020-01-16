@@ -83,10 +83,34 @@ async function deleteUser(req, res) {
   res.json({ result });
 }
 
+async function addGroupToUser(req, res) {
+  const { userId } = req.params;
+  const { groupId } = req.body;
+
+  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
+
+  const result = await userService.addGroupToUser(userId, groupId);
+
+  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
+}
+
+async function deleteGroupFromUser(req, res) {
+  const { userId, groupId } = req.params;
+  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
+
+  const result = await userService.deleteGroupFromUser(userId, groupId);
+
+  log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
+}
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  addGroupToUser,
+  deleteGroupFromUser,
 };

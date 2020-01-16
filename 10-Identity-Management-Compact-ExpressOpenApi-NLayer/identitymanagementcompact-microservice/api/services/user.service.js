@@ -39,11 +39,11 @@ async function getUserById(userId) {
 }
 
 async function createUser(newUserIN) {
-  log.info(`${MODULE_NAME}:${createUser.name} (IN) -> newUserIN: ${JSON.stringify(newUserIN)}`);
+  log.debug(`${MODULE_NAME}:${createUser.name} (IN) -> newUserIN: ${JSON.stringify(newUserIN)}`);
 
   // Check if there NOT exists an user with the same username
   const userFound = await userRepository.getUserByFilter({ username: newUserIN.username });
-  log.info(`${MODULE_NAME}:${createUser.name} (MID) -> userFound: ${JSON.stringify(userFound)}`);
+  log.debug(`${MODULE_NAME}:${createUser.name} (MID) -> userFound: ${JSON.stringify(userFound)}`);
   if (userFound) {
     log.error(`${MODULE_NAME}:${createUser.name} (ERROR) -> error: ${ERROR_USER_EXISTS_WITH_SAME_USERNAME}`);
     throw new Error(ERROR_USER_EXISTS_WITH_SAME_USERNAME);
@@ -67,11 +67,11 @@ async function createUser(newUserIN) {
 }
 
 async function updateUser(userId, updateUserDataIN) {
-  log.info(`${MODULE_NAME}:${updateUser.name} (IN) -> userId: ${userId}, updateUserDataIN: ${JSON.stringify(updateUserDataIN)}`);
+  log.debug(`${MODULE_NAME}:${updateUser.name} (IN) -> userId: ${userId}, updateUserDataIN: ${JSON.stringify(updateUserDataIN)}`);
 
   // Check if there NOT exists an user with the same username and distinct userId
   const userFound = await userRepository.getUserByFilter({ username: updateUserDataIN.username, id: { $ne: userId } });
-  log.info(`${MODULE_NAME}:${updateUser.name} (MID) -> userFound: ${JSON.stringify(userFound)}`);
+  log.debug(`${MODULE_NAME}:${updateUser.name} (MID) -> userFound: ${JSON.stringify(userFound)}`);
   if (userFound) {
     log.error(`${MODULE_NAME}:${updateUser.name} (ERROR) -> error: ${ERROR_USER_EXISTS_WITH_SAME_USERNAME}`);
     throw new Error(ERROR_USER_EXISTS_WITH_SAME_USERNAME);
@@ -91,11 +91,29 @@ async function updateUser(userId, updateUserDataIN) {
 }
 
 async function deleteUser(userId) {
-  log.info(`${MODULE_NAME}:${deleteUser.name} (IN) -> userId: ${userId}`);
+  log.debug(`${MODULE_NAME}:${deleteUser.name} (IN) -> userId: ${userId}`);
 
   const result = await userRepository.deleteUser(userId);
 
   log.debug(`${MODULE_NAME}:${deleteUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  return result;
+}
+
+async function addGroupToUser(userId, groupId) {
+  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
+
+  const result = await userRepository.addGroupToUser(userId, groupId);
+
+  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  return result;
+}
+
+async function deleteGroupFromUser(userId, groupId) {
+  log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
+
+  const result = await userRepository.deleteGroupFromUser(userId, groupId);
+
+  log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
 }
 
@@ -105,4 +123,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  addGroupToUser,
+  deleteGroupFromUser,
 };
