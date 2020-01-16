@@ -5,7 +5,7 @@ let res = [
         pwd: 'admin',
         roles: [{
             role: 'dbOwner',
-            db: 'rbacmanagementDB'
+            db: 'identityManagementCompactDB'
         }]
     }),
 ]

@@ -1,6 +1,10 @@
-# RBAC Management - Express Open API - OAS 3
+# Identity Management Compact - Express Open API - OAS 3
 
-RBAC Management Microservice using Express Open Api & OAS 3
+Identity Management Microservice Compact using Express Open Api & OAS 3
+
+The microservice manages users identities using a typical RBAC (Role Based Access Control) and checks the authentication and authorization in a unique microservice.
+
+For other more complex authentication purposes (oauth2, openid, etc.), other solutions based on several microservices that provide better decoupling of functionality are proposed below.
 
 The RBAC model is composed by these main components:
 
