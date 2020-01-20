@@ -59,10 +59,62 @@ async function deleteRole(id) {
   return result;
 }
 
+async function addEndpointToRole(roleId, endpointId) {
+  log.debug(`${MODULE_NAME}:${addEndpointToRole.name} (IN) -> roleId: ${roleId}, endpointId: ${endpointId}`);
+
+  const roleFound = await getRoleByFilter({ id: roleId });
+
+  // Check if role found
+  // TODO
+
+  // Check if endpoint found
+  // TODO
+
+  let result = roleFound;
+
+  // TODO modificar esto usando una funcion auxiliar que para una lista añada el elemento si no existe
+
+  // Check if group endpoints contains the endpointId
+  const endpointIdFound = roleFound.endpoints.find(x => x === endpointId);
+  if (!endpointIdFound) {
+    roleFound.endpoints.push(endpointId);
+    result = await mongoHelper.update(Role, roleId, roleFound);
+  }
+
+  log.debug(`${MODULE_NAME}:${addEndpointToRole.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
+async function deleteEndpointFromRole(roleId, endpointId) {
+  log.debug(`${MODULE_NAME}:${deleteEndpointFromRole.name} (IN) -> roleId: ${roleId}, endpointId: ${endpointId}`);
+
+  const roleFound = await getRoleByFilter({ id: roleId });
+
+  // Check if role found
+  // TODO
+
+  // Check if endpoint found
+  // TODO
+
+  let result = roleFound;
+
+  // Check if roles contains the roleId
+  const endpointIdFound = roleFound.endpoints.find(x => x === endpointId);
+  if (endpointIdFound) {
+    roleFound.endpoints = roleFound.endpoints.filter(e => e !== endpointId);
+    result = await mongoHelper.update(Role, roleId, roleFound);
+  }
+
+  log.debug(`${MODULE_NAME}:${deleteEndpointFromRole.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
 module.exports = {
   getRoles,
   getRoleByFilter,
   createRole,
   updateRole,
   deleteRole,
+  addEndpointToRole,
+  deleteEndpointFromRole,
 };

@@ -84,10 +84,31 @@ async function deleteGroup(groupId) {
   return result;
 }
 
+async function addRoleToGroup(groupId, roleId) {
+  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
+
+  const result = await groupRepository.addRoleToGroup(groupId, roleId);
+
+  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  return result;
+}
+
+async function deleteRoleFromGroup(groupId, roleId) {
+  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
+
+  const result = await groupRepository.deleteRoleFromGroup(groupId, roleId);
+
+  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  return result;
+}
+
+
 module.exports = {
   getGroups,
   getGroupById,
   createGroup,
   updateGroup,
   deleteGroup,
+  addRoleToGroup,
+  deleteRoleFromGroup,
 };

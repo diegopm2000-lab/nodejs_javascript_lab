@@ -80,10 +80,34 @@ async function deleteGroup(req, res) {
   res.json({ result });
 }
 
+async function addRoleToGroup(req, res) {
+  const { groupId } = req.params;
+  const { roleId } = req.body;
+
+  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
+
+  const result = await groupService.addRoleToGroup(groupId, roleId);
+
+  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
+}
+
+async function deleteRoleFromGroup(req, res) {
+  const { groupId, roleId } = req.params;
+  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
+
+  const result = await groupService.deleteRoleFromGroup(groupId, roleId);
+
+  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
+}
+
 module.exports = {
   getGroups,
   getGroupById,
   createGroup,
   updateGroup,
   deleteGroup,
+  addRoleToGroup,
+  deleteRoleFromGroup,
 };

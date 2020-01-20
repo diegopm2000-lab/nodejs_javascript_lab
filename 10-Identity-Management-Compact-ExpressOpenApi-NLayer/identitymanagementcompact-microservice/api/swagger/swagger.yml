@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: RBAC Management
-  description: RBAC Management - Express Open Api - NLayer
+  title: Identity Management Compact
+  description: Identity Management Compact - Express Open Api - NLayer
   version: 0.1.0
 paths:
 
@@ -125,7 +125,7 @@ paths:
             schema:
               $ref: "#/components/schemas/AddGroupData"
       responses: 
-        "201": 
+        "200": 
           description: Group Added and user data returned 
           content:
             application/json:
@@ -152,8 +152,12 @@ paths:
           schema:
             type: string
       responses: 
-        "204": 
-          description: User deleted OK, no data returned
+        "200": 
+          description: Group Deleted and user data returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/UserData"
 
   # ##################################################################
   # Groups
@@ -255,6 +259,60 @@ paths:
         "204": 
           description: Group deleted OK, no data returned
 
+  /groups/{groupId}/roles:
+    post: 
+      summary: add a role to the group
+      tags:
+        - groups
+      operationId: addRoleToGroup
+      parameters:
+        - name: groupId
+          in: path
+          description: group Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddRoleData"
+      responses: 
+        "200": 
+          description: Role Added and group data returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/GroupData"
+
+  /groups/{groupId}/roles/{roleId}:
+    delete:
+      summary: Delete the role from the group
+      tags:
+        - groups
+      operationId: deleteRoleFromGroup
+      parameters:
+        - name: groupId
+          in: path
+          description: group Id
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          description: role Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Role deleted from group
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/GroupData"
+
   # ##################################################################
   # Roles
   # ##################################################################
@@ -354,6 +412,60 @@ paths:
       responses: 
         "204": 
           description: Role deleted OK, no data returned
+
+  /roles/{roleId}/endpoints:
+    post: 
+      summary: add an endpoint to the role
+      tags:
+        - roles
+      operationId: addEndpointToRole
+      parameters:
+        - name: roleId
+          in: path
+          description: role Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddEndpointData"
+      responses: 
+        "200": 
+          description: Endpoint Added and role data returned 
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/EndpointData"
+
+  /roles/{roleId}/endpoints/{endpointId}:
+    delete:
+      summary: Delete the endpoint from the role
+      tags:
+        - roles
+      operationId: deleteEndpointFromRole
+      parameters:
+        - name: roleId
+          in: path
+          description: role Id
+          required: true
+          schema:
+            type: string
+        - name: endpointId
+          in: path
+          description: endpoint Id
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200": 
+          description: Endpoint deleted from role
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/EndpointData"
 
   # ##################################################################
   # Endpoints
@@ -561,6 +673,12 @@ components:
       items:
         $ref: "#/components/schemas/GroupData"
 
+    AddRoleData:
+      type: object
+      properties: 
+        groupId:
+          type: string
+
     # Roles  
 
     RoleIdData:
@@ -601,6 +719,12 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/RoleData"
+
+    AddEndpointData:
+      type: object
+      properties: 
+        groupId:
+          type: string
 
     # Endpoints  
 

@@ -72,6 +72,8 @@ async function addGroupToUser(userId, groupId) {
 
   let result = userFound;
 
+  // TODO modificar esto usando una funcion auxiliar que para una lista añada el elemento si no existe
+
   // Check if user groups contains the groupId
   const groupIdFound = userFound.groups.find(x => x === groupId);
   if (!groupIdFound) {
@@ -96,14 +98,13 @@ async function deleteGroupFromUser(userId, groupId) {
 
   let result = userFound;
 
+  // TODO modificar esto usando una funcion auxiliar que para una lista elimine el elemento si no existe
+
   // Check if user groups contains the groupId
   const groupIdFound = userFound.groups.find(x => x === groupId);
   if (groupIdFound) {
-    console.log(`--------------------> Group FOUND!!!!!!!!!`)
     userFound.groups = userFound.groups.filter(e => e !== groupId);
     result = await mongoHelper.update(User, userId, userFound);
-  } else {
-    console.log(`-------------------> GROUP NOT FOUND`)
   }
 
   log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (OUT) -> result: ${result}`);

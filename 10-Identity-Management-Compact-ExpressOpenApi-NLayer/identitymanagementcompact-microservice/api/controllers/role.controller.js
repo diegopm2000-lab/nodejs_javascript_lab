@@ -80,10 +80,34 @@ async function deleteRole(req, res) {
   res.json({ result });
 }
 
+async function addEndpointToRole(req, res) {
+  const { roleId } = req.params;
+  const { endpointId } = req.body;
+
+  log.debug(`${MODULE_NAME}:${addEndpointToRole.name} (IN) -> roleId: ${roleId}, endpointId: ${endpointId}`);
+
+  const result = await roleService.addEndpointToRole(roleId, endpointId);
+
+  log.debug(`${MODULE_NAME}:${addEndpointToRole.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
+}
+
+async function deleteEndpointFromRole(req, res) {
+  const { roleId, endpointId } = req.params;
+  log.debug(`${MODULE_NAME}:${deleteEndpointFromRole.name} (IN) -> roleId: ${roleId}, endpointId: ${endpointId}`);
+
+  const result = await roleService.deleteEndpointFromRole(roleId, endpointId);
+
+  log.debug(`${MODULE_NAME}:${deleteEndpointFromRole.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  res.json(result);
+}
+
 module.exports = {
   getRoles,
   getRoleById,
   createRole,
   updateRole,
   deleteRole,
+  addEndpointToRole,
+  deleteEndpointFromRole,
 };

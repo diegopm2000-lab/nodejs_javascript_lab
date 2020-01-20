@@ -80,12 +80,16 @@ async function start(options) {
           getGroups: groupController.getGroups,
           getGroupById: groupController.getGroupById,
           deleteGroup: groupController.deleteGroup,
+          addRoleToGroup: groupController.addRoleToGroup,
+          deleteRoleFromGroup: groupController.deleteRoleFromGroup,
           // Roles
           createRole: roleController.createRole,
           updateRole: roleController.updateRole,
           getRoles: roleController.getRoles,
           getRoleById: roleController.getRoleById,
           deleteRole: roleController.deleteRole,
+          addEndpointToRole: roleController.addEndpointToRole,
+          deleteEndpointFromRole: roleController.deleteEndpointFromRole,
           // Endpoints
           createEndpoint: endpointController.createEndpoint,
           updateEndpoint: endpointController.updateEndpoint,
