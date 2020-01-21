@@ -4,6 +4,9 @@ environment: dev
 infrastructure:
   logger:
     level: debug
+  authentication:
+    tokenExpiration: 30 #minutes
+    tokenSecret: wearethebeast
   express:
     servertimeout: 60000 #miliseconds
     port: 8080

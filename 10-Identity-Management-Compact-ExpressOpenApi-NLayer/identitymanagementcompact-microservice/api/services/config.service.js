@@ -82,6 +82,10 @@ function getMongoConfig() {
   return memConfigRepository.getMongoConfig();
 }
 
+function getAuthConfig() {
+  return memConfigRepository.getAuthConfig();
+}
+
 function getAppProperties() {
   return memConfigRepository.getAppProperties();
 }
@@ -95,5 +99,6 @@ module.exports = {
   getLoggerConfig,
   getExpressConfig,
   getMongoConfig,
+  getAuthConfig,
   getAppProperties,
 };

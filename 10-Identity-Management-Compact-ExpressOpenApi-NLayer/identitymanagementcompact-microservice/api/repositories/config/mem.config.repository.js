@@ -30,10 +30,15 @@ function getMongoConfig() {
   return data.infrastructure.mongo;
 }
 
+function getAuthConfig() {
+  return data.infrastructure.authentication;
+}
+
 module.exports = {
   get,
   set,
   getLoggerConfig,
   getExpressConfig,
   getMongoConfig,
+  getAuthConfig,
 };

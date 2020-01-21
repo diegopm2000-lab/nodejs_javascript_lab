@@ -6,6 +6,7 @@ const loggingBootstrap = require('./api/bootstrap/logging.bootstrap');
 const configBootstrap = require('./api/bootstrap/config.bootstrap');
 const openApiExpressBootstrap = require('./api/bootstrap/openApiExpress.bootstrap');
 const mongooseBootstrap = require('./api/bootstrap/mongoose.bootstrap');
+const jwtBootstrap = require('./api/bootstrap/jwt.bootstrap');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS & PROPERTIES
@@ -58,6 +59,9 @@ async function init() {
 
     // 5. Mongoose init
     await mongooseBootstrap.init();
+
+    // 6. JWT init
+    jwtBootstrap.init();
 
     logAppStarted(init.name);
     return true;

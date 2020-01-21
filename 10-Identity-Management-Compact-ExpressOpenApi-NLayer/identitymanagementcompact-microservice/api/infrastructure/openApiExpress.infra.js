@@ -10,6 +10,8 @@ const YAML = require('yamljs');
 
 const log = require('../infrastructure/logger/applicationLogger.gateway');
 const securityHelper = require('../helpers/security.helper');
+
+const authController = require('../controllers/auth.controller');
 const userController = require('../controllers/user.controller');
 const groupController = require('../controllers/group.controller');
 const roleController = require('../controllers/role.controller');
@@ -66,6 +68,8 @@ async function start(options) {
           'application/json': bodyParser.json(),
         },
         operations: {
+          // Authentication
+          authenticate: authController.authenticate,
           // Users
           createUser: userController.createUser,
           updateUser: userController.updateUser,

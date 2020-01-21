@@ -6,6 +6,35 @@ info:
 paths:
 
   # ##################################################################
+  # Authentication
+  # ##################################################################
+
+  /authenticate:
+    post:
+      summary: authenticate user
+      tags:
+        - "Authentication"
+      operationId: authenticate
+      parameters:
+        - name: username
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: passwd
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/AuthenticatedResponse"
+
+  # ##################################################################
   # Users
   # ##################################################################
 
@@ -583,6 +612,15 @@ components:
     
     ErrorResponse:
       type: object
+
+    # Authentication
+
+    AuthenticatedResponse:
+      required:
+        - token
+      properties:
+        token:
+          type: string
 
     # Users      
 
