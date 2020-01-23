@@ -1,16 +1,16 @@
-// auth.repository.js
+// authentication.repository.js
 
 const bcrypt = require('bcrypt');
 
 const jwtInfra = require('../../infrastructure/jwt.infra');
 const log = require('../../infrastructure/logger/applicationLogger.gateway');
-const userRepository = require('../../repositories/user/mongo.user.repository');
+const userRepository = require('../user/mongo.user.repository');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS & PROPERTIES
 // //////////////////////////////////////////////////////////////////////////////
 
-const MODULE_NAME = '[Auth Repository]';
+const MODULE_NAME = '[Authentication Repository]';
 
 // //////////////////////////////////////////////////////////////////////////////
 // PUBLIC METHODS

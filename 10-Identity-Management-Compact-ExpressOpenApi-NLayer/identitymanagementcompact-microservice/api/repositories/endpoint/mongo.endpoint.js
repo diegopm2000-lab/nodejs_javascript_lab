@@ -5,8 +5,10 @@ const mongooseHidden = require('mongoose-hidden')();
 
 const endpointSchema = new mongoose.Schema({
   id: String,
+  microapp: String,
   name: String,
   description: String,
+  method: String,
   url: String,
   urlregex: String,
 });

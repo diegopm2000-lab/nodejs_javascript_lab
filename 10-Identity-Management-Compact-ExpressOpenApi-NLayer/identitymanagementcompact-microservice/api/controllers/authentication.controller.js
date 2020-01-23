@@ -1,7 +1,7 @@
-// auth.controller.js
+// authentication.controller.js
 
 const log = require('../infrastructure/logger/applicationLogger.gateway');
-const authService = require('../services/auth.service');
+const authService = require('../services/authentication.service');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS & PROPERTIES

@@ -11,9 +11,9 @@ The RBAC model is composed by these main components:
 __user__:
 - id: String
 - username: String
+- password: <<encrypted password>>
 - enabled: boolean
 - groups: <<list of group Id's>>
-- password: <<encrypted password>>
 
 __group__
 - id: String

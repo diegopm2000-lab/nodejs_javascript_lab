@@ -1,0 +1,25 @@
+// authorization.service.js
+
+const log = require('../infrastructure/logger/applicationLogger.gateway');
+
+// //////////////////////////////////////////////////////////////////////////////
+// CONSTANTS & PROPERTIES
+// //////////////////////////////////////////////////////////////////////////////
+
+const MODULE_NAME = '[Authorization Service]';
+
+// //////////////////////////////////////////////////////////////////////////////
+// PUBLIC METHODS
+// //////////////////////////////////////////////////////////////////////////////
+
+async function authorize(endpointurl, userInfo) {
+  log.debug(`${MODULE_NAME}:${authorize.name} (IN) -> endpointurl: ${endpointurl}, userInfo: ${JSON.stringify(userInfo)}`);
+
+  return new Promise((resolve) => {
+    resolve({ message: 'OK' });
+  });
+}
+
+module.exports = {
+  authorize,
+};

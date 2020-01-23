@@ -2,7 +2,7 @@
 
 const log = require('../infrastructure/logger/applicationLogger.gateway');
 const configService = require('../services/config.service');
-const authService = require('../services/auth.service');
+const authenticationService = require('../services/authentication.service');
 const jwtInfra = require('../infrastructure/jwt.infra');
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ function init() {
   jwtInfra.init(authOptions);
 
   log.info(`${MODULE_NAME} ${init.name} (OUT) --> Returning authService`);
-  return authService;
+  return authenticationService;
 }
 
 module.exports = {

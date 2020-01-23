@@ -4,6 +4,7 @@ const uniqid = require('uniqid');
 
 const log = require('../infrastructure/logger/applicationLogger.gateway');
 const groupRepository = require('../repositories/group/mongo.group.repository');
+const roleRepository = require('../repositories/role/mongo.role.repository');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS & PROPERTIES
@@ -87,7 +88,32 @@ async function deleteGroup(groupId) {
 async function addRoleToGroup(groupId, roleId) {
   log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
 
-  const result = await groupRepository.addRoleToGroup(groupId, roleId);
+  const groupFound = await groupRepository.getGroupByFilter({ id: groupId });
+
+  // Check if group found
+  if (!groupFound) {
+    const errorMessage = `Group with id: ${groupId} not found in database`;
+    log.error(`${MODULE_NAME}:${addRoleToGroup.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
+  }
+
+  const roleFound = await roleRepository.getRoleByFilter({ id: roleId });
+
+  // Check if role found
+  if (!roleFound) {
+    const errorMessage = `Role with id: ${roleId} not found in database`;
+    log.error(`${MODULE_NAME}:${addRoleToGroup.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
+  }
+
+  let result = groupFound;
+
+  // Check if roles contains the roleId
+  const roleIdFound = groupFound.roles.find(x => x === roleId);
+  if (!roleIdFound) {
+    groupFound.roles.push(roleId);
+    result = await groupRepository.updateGroup(groupId, groupFound);
+  }
 
   log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -96,12 +122,27 @@ async function addRoleToGroup(groupId, roleId) {
 async function deleteRoleFromGroup(groupId, roleId) {
   log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
 
-  const result = await groupRepository.deleteRoleFromGroup(groupId, roleId);
+  const groupFound = await groupRepository.getGroupByFilter({ id: groupId });
+
+  // Check if group found
+  if (!groupFound) {
+    const errorMessage = `Group with id: ${groupId} not found in database`;
+    log.error(`${MODULE_NAME}:${addRoleToGroup.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
+  }
+
+  let result = groupFound;
+
+  // Check if roles contains the roleId
+  const roleIdFound = groupFound.roles.find(x => x === roleId);
+  if (roleIdFound) {
+    groupFound.roles = groupFound.roles.filter(e => e !== roleId);
+    result = await groupRepository.updateGroup(groupId, groupFound);
+  }
 
   log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
 }
-
 
 module.exports = {
   getGroups,

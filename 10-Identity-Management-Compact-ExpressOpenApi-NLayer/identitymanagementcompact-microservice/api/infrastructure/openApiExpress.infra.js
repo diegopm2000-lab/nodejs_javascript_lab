@@ -11,7 +11,8 @@ const YAML = require('yamljs');
 const log = require('../infrastructure/logger/applicationLogger.gateway');
 const securityHelper = require('../helpers/security.helper');
 
-const authController = require('../controllers/auth.controller');
+const authenticationController = require('../controllers/authentication.controller');
+const authorizationController = require('../controllers/authorization.controller');
 const userController = require('../controllers/user.controller');
 const groupController = require('../controllers/group.controller');
 const roleController = require('../controllers/role.controller');
@@ -69,7 +70,9 @@ async function start(options) {
         },
         operations: {
           // Authentication
-          authenticate: authController.authenticate,
+          authenticate: authenticationController.authenticate,
+          // Authorization
+          authorize: authorizationController.authorize,
           // Users
           createUser: userController.createUser,
           updateUser: userController.updateUser,

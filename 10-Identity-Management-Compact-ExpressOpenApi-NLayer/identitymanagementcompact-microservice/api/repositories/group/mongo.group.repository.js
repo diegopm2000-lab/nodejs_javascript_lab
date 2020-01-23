@@ -59,60 +59,10 @@ async function deleteGroup(id) {
   return result;
 }
 
-async function addRoleToGroup(groupId, roleId) {
-  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
-
-  const groupFound = await getGroupByFilter({ id: groupId });
-
-  // Check if group found
-  // TODO
-
-  // Check if roleId found
-  // TODO
-
-  let result = groupFound;
-
-  // Check if roles contains the roleId
-  const roleIdFound = groupFound.roles.find(x => x === roleId);
-  if (!roleIdFound) {
-    groupFound.roles.push(roleId);
-    result = await mongoHelper.update(Group, groupId, groupFound);
-  }
-
-  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (OUT) -> result: ${result}`);
-  return result;
-}
-
-async function deleteRoleFromGroup(groupId, roleId) {
-  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (IN) -> groupId: ${groupId}, roleId: ${roleId}`);
-
-  const groupFound = await getGroupByFilter({ id: groupId });
-
-  // Check if group found
-  // TODO
-
-  // Check if roleId found
-  // TODO
-
-  let result = groupFound;
-
-  // Check if roles contains the roleId
-  const roleIdFound = groupFound.roles.find(x => x === roleId);
-  if (roleIdFound) {
-    groupFound.roles = groupFound.roles.filter(e => e !== roleId);
-    result = await mongoHelper.update(Group, groupId, groupFound);
-  }
-
-  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (OUT) -> result: ${result}`);
-  return result;
-}
-
 module.exports = {
   getGroups,
   getGroupByFilter,
   createGroup,
   updateGroup,
   deleteGroup,
-  addRoleToGroup,
-  deleteRoleFromGroup,
 };

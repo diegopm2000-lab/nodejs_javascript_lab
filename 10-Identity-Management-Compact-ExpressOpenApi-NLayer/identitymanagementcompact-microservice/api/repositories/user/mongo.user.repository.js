@@ -59,64 +59,10 @@ async function deleteUser(id) {
   return result;
 }
 
-async function addGroupToUser(userId, groupId) {
-  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
-
-  const userFound = await getUserByFilter({ id: userId });
-
-  // Check if user found
-  // TODO
-
-  // Check if groupId found
-  // TODO
-
-  let result = userFound;
-
-  // TODO modificar esto usando una funcion auxiliar que para una lista añada el elemento si no existe
-
-  // Check if user groups contains the groupId
-  const groupIdFound = userFound.groups.find(x => x === groupId);
-  if (!groupIdFound) {
-    userFound.groups.push(groupId);
-    result = await mongoHelper.update(User, userId, userFound);
-  }
-
-  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (OUT) -> result: ${result}`);
-  return result;
-}
-
-async function deleteGroupFromUser(userId, groupId) {
-  log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
-
-  const userFound = await getUserByFilter({ id: userId });
-
-  // Check if user found
-  // TODO
-
-  // Check if groupId found
-  // TODO
-
-  let result = userFound;
-
-  // TODO modificar esto usando una funcion auxiliar que para una lista elimine el elemento si no existe
-
-  // Check if user groups contains the groupId
-  const groupIdFound = userFound.groups.find(x => x === groupId);
-  if (groupIdFound) {
-    userFound.groups = userFound.groups.filter(e => e !== groupId);
-    result = await mongoHelper.update(User, userId, userFound);
-  }
-
-  log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (OUT) -> result: ${result}`);
-  return result;
-}
-
 module.exports = {
   getUsers,
   getUserByFilter,
   createUser,
   updateUser,
   deleteUser,
-  addGroupToUser,
-  deleteGroupFromUser,
 };

@@ -35,6 +35,35 @@ paths:
                 $ref: "#/components/schemas/AuthenticatedResponse"
 
   # ##################################################################
+  # Authorization
+  # ##################################################################
+
+  /authorize:
+    get:
+      summary: authorize endpoint
+      tags:
+        - "Authorization"
+      operationId: authorize
+      parameters:
+        - name: endpointurl
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/AuthorizedResponse"
+
+  # ##################################################################
   # Users
   # ##################################################################
 
@@ -616,6 +645,15 @@ components:
     # Authentication
 
     AuthenticatedResponse:
+      required:
+        - token
+      properties:
+        token:
+          type: string
+
+    # Authorization
+
+    AuthorizedResponse:
       required:
         - token
       properties:

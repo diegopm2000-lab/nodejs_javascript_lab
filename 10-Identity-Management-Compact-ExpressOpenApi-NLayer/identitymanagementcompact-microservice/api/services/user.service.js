@@ -5,6 +5,7 @@ const uniqid = require('uniqid');
 
 const log = require('../infrastructure/logger/applicationLogger.gateway');
 const userRepository = require('../repositories/user/mongo.user.repository');
+const groupRepository = require('../repositories/group/mongo.group.repository');
 
 // //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS & PROPERTIES
@@ -102,7 +103,32 @@ async function deleteUser(userId) {
 async function addGroupToUser(userId, groupId) {
   log.debug(`${MODULE_NAME}:${addGroupToUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
 
-  const result = await userRepository.addGroupToUser(userId, groupId);
+  const userFound = await userRepository.getUserByFilter({ id: userId });
+
+  // Check if user found
+  if (!userFound) {
+    const errorMessage = `User with id: ${userId} not found in database`;
+    log.error(`${MODULE_NAME}:${addGroupToUser.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
+  }
+
+  const groupFound = await groupRepository.getGroupByFilter({ id: groupId });
+
+  // Check if group found
+  if (!groupFound) {
+    const errorMessage = `Group with id: ${groupId} not found in database`;
+    log.error(`${MODULE_NAME}:${addGroupToUser.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
+  }
+
+  let result = userFound;
+
+  // Check if groups list contains the groupId
+  const groupIdFound = userFound.groups.find(x => x === groupId);
+  if (!groupIdFound) {
+    userFound.groups.push(groupId);
+    result = await userRepository.updateUser(userId, userFound);
+  }
 
   log.debug(`${MODULE_NAME}:${addGroupToUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -111,7 +137,23 @@ async function addGroupToUser(userId, groupId) {
 async function deleteGroupFromUser(userId, groupId) {
   log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (IN) -> userId: ${userId}, groupId: ${groupId}`);
 
-  const result = await userRepository.deleteGroupFromUser(userId, groupId);
+  const userFound = await userRepository.getUserByFilter({ id: userId });
+
+  // Check if user found
+  if (!userFound) {
+    const errorMessage = `User with id: ${userId} not found in database`;
+    log.error(`${MODULE_NAME}:${addGroupToUser.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
+  }
+
+  let result = userFound;
+
+  // Check if groups list contains the groupId
+  const endpointIdFound = userFound.groups.find(x => x === groupId);
+  if (endpointIdFound) {
+    userFound.groups = userFound.groups.filter(e => e !== groupId);
+    result = await userRepository.updateUser(userId, userFound);
+  }
 
   log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
