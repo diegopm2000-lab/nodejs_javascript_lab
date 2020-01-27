@@ -106,14 +106,7 @@ async function addEndpointToRole(roleId, endpointId) {
     throw new Error(errorMessage);
   }
 
-  let result = roleFound;
-
-  // Check if endpoints list contains the endpointId
-  const endpointIdFound = roleFound.endpoints.find(x => x === endpointId);
-  if (!endpointIdFound) {
-    roleFound.endpoints.push(endpointId);
-    result = await roleRepository.updateRole(roleId, roleFound);
-  }
+  const result = await roleRepository.addEndpointToRole(roleId, endpointFound);
 
   log.debug(`${MODULE_NAME}:${addEndpointToRole.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -131,14 +124,16 @@ async function deleteEndpointFromRole(roleId, endpointId) {
     throw new Error(errorMessage);
   }
 
-  let result = roleFound;
+  const endpointFound = await endpointRepository.getEndpointByFilter({ id: endpointId });
 
-  // Check if endpoints list contains the endpointId
-  const endpointIdFound = roleFound.endpoints.find(x => x === endpointId);
-  if (endpointIdFound) {
-    roleFound.endpoints = roleFound.endpoints.filter(e => e !== endpointId);
-    result = await roleRepository.updateRole(roleId, roleFound);
+  // Check if endpoint found
+  if (!endpointFound) {
+    const errorMessage = `Endpoint with id: ${endpointId} not found in database`;
+    log.error(`${MODULE_NAME}:${addEndpointToRole.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
   }
+
+  const result = await roleRepository.deleteEndpointFromRole(roleId, endpointFound);
 
   log.debug(`${MODULE_NAME}:${deleteEndpointFromRole.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;

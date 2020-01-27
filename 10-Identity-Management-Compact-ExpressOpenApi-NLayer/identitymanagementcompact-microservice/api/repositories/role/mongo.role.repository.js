@@ -59,10 +59,38 @@ async function deleteRole(id) {
   return result;
 }
 
+async function addEndpointToRole(id, endpoint) {
+  log.debug(`${MODULE_NAME}:${addEndpointToRole.name} (IN) -> id: ${id}, endpoint: ${JSON.stringify(endpoint)}`);
+
+  const result = await Role.findOneAndUpdate(
+    { id },
+    { $addToSet: { endpoints: endpoint._id } }, // eslint-disable-line no-underscore-dangle
+    { new: true },
+  );
+
+  log.debug(`${MODULE_NAME}:${addEndpointToRole.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
+async function deleteEndpointFromRole(id, endpoint) {
+  log.debug(`${MODULE_NAME}:${deleteEndpointFromRole.name} (IN) -> id: ${id}, endpoint: ${JSON.stringify(endpoint)}`);
+
+  const result = await Role.findOneAndUpdate(
+    { id },
+    { $pull: { endpoints: endpoint._id } }, // eslint-disable-line no-underscore-dangle
+    { new: true },
+  );
+
+  log.debug(`${MODULE_NAME}:${deleteEndpointFromRole.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
 module.exports = {
   getRoles,
   getRoleByFilter,
   createRole,
   updateRole,
   deleteRole,
+  addEndpointToRole,
+  deleteEndpointFromRole,
 };

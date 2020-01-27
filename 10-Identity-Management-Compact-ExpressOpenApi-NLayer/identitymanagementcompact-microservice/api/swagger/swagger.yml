@@ -113,6 +113,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: populated
+          in: query
+          description: Indicates if the result will be populated or not
+          required: false
+          schema:
+            type: boolean
       responses: 
         "200": 
           description: User data returned

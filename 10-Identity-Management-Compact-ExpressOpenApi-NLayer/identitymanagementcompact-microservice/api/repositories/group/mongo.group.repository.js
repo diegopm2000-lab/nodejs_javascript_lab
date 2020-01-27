@@ -59,10 +59,38 @@ async function deleteGroup(id) {
   return result;
 }
 
+async function addRoleToGroup(id, role) {
+  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (IN) -> id: ${id}, role: ${JSON.stringify(role)}`);
+
+  const result = await Group.findOneAndUpdate(
+    { id },
+    { $addToSet: { roles: role._id } }, // eslint-disable-line no-underscore-dangle
+    { new: true },
+  );
+
+  log.debug(`${MODULE_NAME}:${addRoleToGroup.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
+async function deleteRoleFromGroup(id, role) {
+  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (IN) -> id: ${id}, role: ${JSON.stringify(role)}`);
+
+  const result = await Group.findOneAndUpdate(
+    { id },
+    { $pull: { roles: role._id } }, // eslint-disable-line no-underscore-dangle
+    { new: true },
+  );
+
+  log.debug(`${MODULE_NAME}:${deleteRoleFromGroup.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
 module.exports = {
   getGroups,
   getGroupByFilter,
   createGroup,
   updateGroup,
   deleteGroup,
+  addRoleToGroup,
+  deleteRoleFromGroup,
 };

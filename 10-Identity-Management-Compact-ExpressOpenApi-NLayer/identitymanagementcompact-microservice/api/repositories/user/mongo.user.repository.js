@@ -23,10 +23,31 @@ async function getUsers() {
   return result;
 }
 
-async function getUserByFilter(filter) {
-  log.debug(`${MODULE_NAME}:${getUserByFilter.name} (IN) -> filter: ${JSON.stringify(filter)}`);
+async function getUserByFilter(filter, populated) {
+  log.debug(`${MODULE_NAME}:${getUserByFilter.name} (IN) -> filter: ${JSON.stringify(filter)}, populated: ${populated}`);
 
-  const result = await mongoHelper.getByFilter(User, filter);
+  let result;
+  if (populated) {
+    result = await User.findOne(filter)
+      .select('-__v -_id')
+      .populate({
+        path: 'groups',
+        model: 'Group',
+        select: '-__v -_id',
+        populate: {
+          path: 'roles',
+          model: 'Role',
+          select: '-__v -_id',
+          populate: {
+            path: 'endpoints',
+            model: 'Endpoint',
+            select: '-__v -_id',
+          },
+        },
+      });
+  } else {
+    result = await mongoHelper.getByFilter(User, filter);
+  }
 
   log.debug(`${MODULE_NAME}:${getUserByFilter.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -59,10 +80,38 @@ async function deleteUser(id) {
   return result;
 }
 
+async function addGroupToUser(id, group) {
+  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (IN) -> id: ${id}, group: ${JSON.stringify(group)}`);
+
+  const result = await User.findOneAndUpdate(
+    { id },
+    { $addToSet: { groups: group._id } }, // eslint-disable-line no-underscore-dangle
+    { new: true },
+  );
+
+  log.debug(`${MODULE_NAME}:${addGroupToUser.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
+async function deleteGroupFromUser(id, group) {
+  log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (IN) -> id: ${id}, group: ${JSON.stringify(group)}`);
+
+  const result = await User.findOneAndUpdate(
+    { id },
+    { $pull: { groups: group._id } }, // eslint-disable-line no-underscore-dangle
+    { new: true },
+  );
+
+  log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (OUT) -> result: ${result}`);
+  return result;
+}
+
 module.exports = {
   getUsers,
   getUserByFilter,
   createUser,
   updateUser,
   deleteUser,
+  addGroupToUser,
+  deleteGroupFromUser,
 };

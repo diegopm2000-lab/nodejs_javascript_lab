@@ -30,10 +30,10 @@ async function getUsers() {
   return result;
 }
 
-async function getUserById(userId) {
-  log.debug(`${MODULE_NAME}:${getUserById.name} (IN) -> userId: ${userId}`);
+async function getUserById(userId, populated) {
+  log.debug(`${MODULE_NAME}:${getUserById.name} (IN) -> userId: ${userId}, populated: ${populated}`);
 
-  const result = await userRepository.getUserByFilter({ id: userId });
+  const result = await userRepository.getUserByFilter({ id: userId }, populated);
 
   log.debug(`${MODULE_NAME}:${getUserById.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -121,14 +121,7 @@ async function addGroupToUser(userId, groupId) {
     throw new Error(errorMessage);
   }
 
-  let result = userFound;
-
-  // Check if groups list contains the groupId
-  const groupIdFound = userFound.groups.find(x => x === groupId);
-  if (!groupIdFound) {
-    userFound.groups.push(groupId);
-    result = await userRepository.updateUser(userId, userFound);
-  }
+  const result = await userRepository.addGroupToUser(userId, groupFound);
 
   log.debug(`${MODULE_NAME}:${addGroupToUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;
@@ -146,14 +139,16 @@ async function deleteGroupFromUser(userId, groupId) {
     throw new Error(errorMessage);
   }
 
-  let result = userFound;
+  const groupFound = await groupRepository.getGroupByFilter({ id: groupId });
 
-  // Check if groups list contains the groupId
-  const endpointIdFound = userFound.groups.find(x => x === groupId);
-  if (endpointIdFound) {
-    userFound.groups = userFound.groups.filter(e => e !== groupId);
-    result = await userRepository.updateUser(userId, userFound);
+  // Check if group found
+  if (!groupFound) {
+    const errorMessage = `Group with id: ${groupId} not found in database`;
+    log.error(`${MODULE_NAME}:${addGroupToUser.name} (ERROR) -> ${errorMessage}`);
+    throw new Error(errorMessage);
   }
+
+  const result = await userRepository.deleteGroupFromUser(userId, groupFound);
 
   log.debug(`${MODULE_NAME}:${deleteGroupFromUser.name} (OUT) -> result: ${JSON.stringify(result)}`);
   return result;

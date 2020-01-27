@@ -6,7 +6,12 @@ const mongooseHidden = require('mongoose-hidden')();
 const roleSchema = new mongoose.Schema({
   id: String,
   name: String,
-  endpoints: [String],
+  endpoints: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Endpoint',
+    },
+  ],
 });
 
 roleSchema.plugin(mongooseHidden); // to hidden _id and __v in query results

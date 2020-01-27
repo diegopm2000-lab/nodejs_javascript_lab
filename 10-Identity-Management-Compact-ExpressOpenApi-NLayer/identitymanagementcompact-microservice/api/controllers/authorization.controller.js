@@ -21,7 +21,7 @@ async function authorize(req, res) {
 
   const userInfo = jwtInfra.getUserInfoFromAuthHeader(token);
 
-  const result = await authorizationService.authorize(endpointurl, userInfo);
+  const result = await authorizationService.authorize(endpointurl, userInfo.username);
 
   log.debug(`${MODULE_NAME}:${authorize.name} (OUT) -> result: ${JSON.stringify(result)}`);
   res.json(result);

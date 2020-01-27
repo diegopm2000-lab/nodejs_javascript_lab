@@ -33,6 +33,15 @@ async function getByFilter(Schema, filter) {
   return result;
 }
 
+async function getByFilterPopulated(Schema, filter, fieldToPopulate) {
+  log.debug(`${MODULE_NAME}:${getByFilterPopulated.name} (IN) -> Schema: ${Schema.prototype.baseModelName}, filter: ${JSON.stringify(filter)}`);
+
+  const result = await Schema.findOne(filter).populate(fieldToPopulate, '-_id -__v');
+
+  log.debug(`${MODULE_NAME}:${getByFilterPopulated.name} (OUT) -> result: ${JSON.stringify(result)}`);
+  return result;
+}
+
 async function create(Schema, newData) {
   log.debug(`${MODULE_NAME}:${create.name} (IN) -> Schema: ${Schema.prototype.baseModelName}, newData: ${JSON.stringify(newData)}`);
 
@@ -73,6 +82,7 @@ async function deleteById(Schema, id) {
 module.exports = {
   getAll,
   getByFilter,
+  getByFilterPopulated,
   create,
   update,
   deleteById,

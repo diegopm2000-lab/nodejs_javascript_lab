@@ -13,68 +13,73 @@ let res = [
 
     // Calculator Micro App Endpoints
 
-    db.createCollection('endpoints'),
-    db.endpoints.insert({
-        id: 'endpoint-calculator-add',
-        microapp: 'calculator',
-        name: 'add',
-        description: 'add operation',
-        method: 'GET',
-        url: '/api/calculator/add',
-        urlregex: '/api/calculator/add'
-    }),
-    db.endpoints.insert({
-      id: 'endpoint-calculator-substract',
-      microapp: 'calculator',
-      name: 'substract',
-      description: 'substract operation',
-      method: 'GET',
-      url: '/api/calculator/substract',
-      urlregex: '/api/calculator/substract'
-    }),
-    db.endpoints.insert({
-      id: 'endpoint-calculator-multiply',
-      microapp: 'calculator',
-      name: 'multiply',
-      description: 'multiply operation',
-      method: 'GET',
-      url: '/api/calculator/multiply',
-      urlregex: '/api/calculator/multiply'
-    }),
-    db.endpoints.insert({
-      id: 'endpoint-calculator-divide',
-      microapp: 'calculator',
-      name: 'divide',
-      description: 'divide operation',
-      method: 'GET',
-      url: '/api/calculator/divide',
-      urlregex: '/api/calculator/divide'
-    }),
+    // db.createCollection('endpoints'),
+    // db.endpoints.insert({
+    //     id: 'endpoint-calculator-add',
+    //     microapp: 'calculator',
+    //     name: 'add',
+    //     description: 'add operation',
+    //     method: 'GET',
+    //     url: '/api/calculator/add',
+    //     urlregex: '/api/calculator/add'
+    // }),
+    // db.endpoints.insert({
+    //   id: 'endpoint-calculator-substract',
+    //   microapp: 'calculator',
+    //   name: 'substract',
+    //   description: 'substract operation',
+    //   method: 'GET',
+    //   url: '/api/calculator/substract',
+    //   urlregex: '/api/calculator/substract'
+    // }),
+    // db.endpoints.insert({
+    //   id: 'endpoint-calculator-multiply',
+    //   microapp: 'calculator',
+    //   name: 'multiply',
+    //   description: 'multiply operation',
+    //   method: 'GET',
+    //   url: '/api/calculator/multiply',
+    //   urlregex: '/api/calculator/multiply'
+    // }),
+    // db.endpoints.insert({
+    //   id: 'endpoint-calculator-divide',
+    //   microapp: 'calculator',
+    //   name: 'divide',
+    //   description: 'divide operation',
+    //   method: 'GET',
+    //   url: '/api/calculator/divide',
+    //   urlregex: '/api/calculator/divide'
+    // }),
 
     // Roles
 
-    db.createCollection('roles'),
-    db.roles.insert({
-      id: 'role-calculator-user',
-      name: 'Calculator User',
-      endpoints: [
-          'endpoint-calculator-add',
-          'endpoint-calculator-substract',
-          'endpoint-calculator-multiply',
-          'endpoint-calculator-divide'
-      ]
-    }),
+    // db.createCollection('roles'),
+    // db.roles.insert({
+    //   id: 'role-calculator-user',
+    //   name: 'Calculator User',
+    //   endpoints: [
+    //       'endpoint-calculator-add',
+    //       'endpoint-calculator-substract',
+    //       'endpoint-calculator-multiply',
+    //       'endpoint-calculator-divide'
+    //   ]
+    // }),
 
     // Groups
 
     db.createCollection('groups'),
+    // db.groups.insert({
+    //     id: 'group-investigators',
+    //     name: 'Investigators Group',
+    //     roles: [
+    //         'role-calculator-user'
+    //     ]
+    // }),
     db.groups.insert({
-        id: 'group-investigators',
-        name: 'Investigators Group',
-        roles: [
-            'role-calculator-user'
-        ]
-    }),
+      id: 'group-investigators',
+      name: 'Investigators Group',
+      roles: []
+  }),
 
     // Users
 

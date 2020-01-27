@@ -1,4 +1,4 @@
-// authentication.repository.js
+// mongo.authentication.repository.js
 
 const bcrypt = require('bcrypt');
 
@@ -15,6 +15,8 @@ const MODULE_NAME = '[Authentication Repository]';
 // //////////////////////////////////////////////////////////////////////////////
 // PUBLIC METHODS
 // //////////////////////////////////////////////////////////////////////////////
+
+// TODO este repositorio es innecesario, debe de ir todo en el servicio
 
 async function authenticate(username, passwd) {
   log.debug(`${MODULE_NAME}:${authenticate.name} (IN) -> username: ${username}, passwd: ${passwd}`);

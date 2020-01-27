@@ -39,9 +39,10 @@ async function getUsers(req, res) {
 
 async function getUserById(req, res) {
   const { userId } = req.params;
-  log.debug(`${MODULE_NAME}:${getUsers.name} (IN) -> userId: ${userId}`);
+  const { populated } = req.query;
+  log.debug(`${MODULE_NAME}:${getUsers.name} (IN) -> userId: ${userId}, populated: ${populated}`);
 
-  const result = await userService.getUserById(userId);
+  const result = await userService.getUserById(userId, populated);
 
   log.debug(`${MODULE_NAME}:${getUsers.name} (OUT) -> result: ${JSON.stringify(result)}`);
   res.json(result);

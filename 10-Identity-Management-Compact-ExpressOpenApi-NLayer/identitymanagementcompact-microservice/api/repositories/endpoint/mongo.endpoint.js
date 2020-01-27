@@ -1,7 +1,7 @@
 // mongo.endpoint.js
 
 const mongoose = require('mongoose');
-const mongooseHidden = require('mongoose-hidden')();
+// const mongooseHidden = require('mongoose-hidden')();
 
 const endpointSchema = new mongoose.Schema({
   id: String,
@@ -13,7 +13,7 @@ const endpointSchema = new mongoose.Schema({
   urlregex: String,
 });
 
-endpointSchema.plugin(mongooseHidden); // to hidden _id and __v in query results
+// endpointSchema.plugin(mongooseHidden); // to hidden _id and __v in query results
 
 const Endpoint = mongoose.model('Endpoint', endpointSchema);
 
