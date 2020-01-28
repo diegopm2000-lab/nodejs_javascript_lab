@@ -43,6 +43,8 @@ async function authorize(endpointurl, username) {
     const regexp = pathToRegexp(endpoint.urlregex, keys);
     const result = regexp.test(endpointurl);
 
+    // TODO habría que validar tambien el metodo (GET, POST, PUT, ETC)...para eso es mejor pasar en el authorize tambien el method
+
     log.debug(`${MODULE_NAME}:${authorize.name} (MID) -> urlregex: ${endpoint.urlregex}, endpointurl: ${endpointurl}, result match: ${result}`);
     return result;
   });

@@ -40,7 +40,7 @@ paths:
 
   /authorize:
     get:
-      summary: authorize endpoint
+      summary: authorize user access to endpoint
       tags:
         - "Authorization"
       operationId: authorize
