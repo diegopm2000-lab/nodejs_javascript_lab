@@ -1,5 +1,7 @@
 // authorization.service.js
 
+const { pathToRegexp } = require('path-to-regexp');
+
 const log = require('../infrastructure/logger/applicationLogger.gateway');
 const userRepository = require('../repositories/user/mongo.user.repository');
 
@@ -24,7 +26,7 @@ async function authorize(endpointurl, username) {
   const userEndpoints = [];
 
   // TODO complejidad O(2N) --> mejorable, se puede hacer en un O(n) con una única pasada por el array y además cortar
-  // la búsqueda en cuanto se haya encontrado
+  // la búsqueda en cuanto se haya encontrado...se puede usar combinando find y some, por ejemplo
 
   user.groups.forEach((group) => {
     group.roles.forEach((role) => {
@@ -37,10 +39,11 @@ async function authorize(endpointurl, username) {
   log.debug(`${MODULE_NAME}:${authorize.name} (MID) -> userEndpoints: ${JSON.stringify(userEndpoints)}`);
 
   const endpointFound = userEndpoints.find((endpoint) => {
-    // TODO usar la librería de regex mejor que ponerlo a manubrio en el mongo
-    const pattern = new RegExp(endpoint.urlregex);
-    const result = pattern.test(endpointurl);
-    console.log(`${MODULE_NAME}:${authorize.name} (MID) -> urlregex: ${endpoint.urlregex}, endpointurl: ${endpointurl}, result match: ${result}`);
+    const keys = [];
+    const regexp = pathToRegexp(endpoint.urlregex, keys);
+    const result = regexp.test(endpointurl);
+
+    log.debug(`${MODULE_NAME}:${authorize.name} (MID) -> urlregex: ${endpoint.urlregex}, endpointurl: ${endpointurl}, result match: ${result}`);
     return result;
   });
 
