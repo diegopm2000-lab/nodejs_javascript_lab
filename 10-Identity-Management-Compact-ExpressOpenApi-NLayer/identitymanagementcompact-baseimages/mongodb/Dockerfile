@@ -1,4 +1,4 @@
-FROM mongo:3.6.12
+FROM mongo:4.2.3
 
 LABEL mantainer="UST-Blockchain Team"
 
