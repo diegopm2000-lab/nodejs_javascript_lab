@@ -261,6 +261,7 @@ print('-----------------> Endpoints inserted');
 // 3. Roles
 
 let cursor = db.endpoints.find();
+<<<<<<< develop
 let allEndpoints = [];
 while (cursor.hasNext()) {
   let endpointIndex = cursor.next();
@@ -307,3 +308,19 @@ while (cursorGroups.hasNext()) {
     });
   }
 }
+=======
+let endpointsIDs = [];
+while ( cursor.hasNext() ) {
+  endpointsIDs.push(cursor.next()._id);
+}
+
+let roles = [
+  
+    db.createCollection('roles'),
+    db.roles.insert({
+      id: 'role-identity-manager',
+      name: 'Identity Manager',
+      endpoints: endpointsIDs
+    }),
+]
+>>>>>>> wip
