@@ -67,7 +67,7 @@ paths:
   # Users
   # ##################################################################
 
-  /users:
+  /private/users:
     post: 
       summary: Create a new user
       tags:
@@ -100,7 +100,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/UserDataList"
 
-  /users/{userId}:
+  /private/users/{userId}:
     get:
       summary: Get the user by id
       tags:
@@ -169,7 +169,7 @@ paths:
         "204": 
           description: User deleted OK, no data returned
 
-  /users/{userId}/groups:
+  /private/users/{userId}/groups:
     post: 
       summary: add a group to the user
       tags:
@@ -196,7 +196,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/UserData"
 
-  /users/{userId}/groups/{groupId}:
+  /private/users/{userId}/groups/{groupId}:
     delete:
       summary: Delete the group from the user
       tags:
@@ -227,7 +227,7 @@ paths:
   # Groups
   # ##################################################################
 
-  /groups:
+  /private/groups:
     post: 
       summary: Create a new group
       tags:
@@ -260,7 +260,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/GroupDataList"
 
-  /groups/{groupId}:
+  /private/groups/{groupId}:
     get:
       summary: Get the group by id
       tags:
@@ -323,7 +323,7 @@ paths:
         "204": 
           description: Group deleted OK, no data returned
 
-  /groups/{groupId}/roles:
+  /private/groups/{groupId}/roles:
     post: 
       summary: add a role to the group
       tags:
@@ -350,7 +350,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/GroupData"
 
-  /groups/{groupId}/roles/{roleId}:
+  /private/groups/{groupId}/roles/{roleId}:
     delete:
       summary: Delete the role from the group
       tags:
@@ -381,7 +381,7 @@ paths:
   # Roles
   # ##################################################################
 
-  /roles:
+  /private/roles:
     post: 
       summary: Create a new role
       tags:
@@ -414,7 +414,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/RoleDataList"
 
-  /roles/{roleId}:
+  /private/roles/{roleId}:
     get:
       summary: Get the role by id
       tags:
@@ -477,7 +477,7 @@ paths:
         "204": 
           description: Role deleted OK, no data returned
 
-  /roles/{roleId}/endpoints:
+  /private/roles/{roleId}/endpoints:
     post: 
       summary: add an endpoint to the role
       tags:
@@ -504,7 +504,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/EndpointData"
 
-  /roles/{roleId}/endpoints/{endpointId}:
+  /private/roles/{roleId}/endpoints/{endpointId}:
     delete:
       summary: Delete the endpoint from the role
       tags:
@@ -535,7 +535,7 @@ paths:
   # Endpoints
   # ##################################################################
 
-  /endpoints:
+  /private/endpoints:
     post: 
       summary: Create a new endpoint
       tags:
@@ -568,7 +568,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/EndpointDataList"
 
-  /endpoints/{endpointId}:
+  /private/endpoints/{endpointId}:
     get:
       summary: Get the endpoint by id
       tags:
