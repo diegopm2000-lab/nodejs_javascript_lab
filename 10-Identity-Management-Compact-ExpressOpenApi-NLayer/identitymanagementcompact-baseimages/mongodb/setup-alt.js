@@ -261,11 +261,9 @@ print('-----------------> Endpoints inserted');
 // 3. Roles
 
 let cursor = db.endpoints.find();
-<<<<<<< develop
-let allEndpoints = [];
-while (cursor.hasNext()) {
-  let endpointIndex = cursor.next();
-  allEndpoints.push(endpointIndex._id);
+let endpointsIDs = [];
+while ( cursor.hasNext() ) {
+  endpointsIDs.push(cursor.next()._id);
 }
 
 let resRoles = [
@@ -276,51 +274,3 @@ let resRoles = [
       endpoints: allEndpoints
     }),
 ]
-
-// 4. Groups
-
-let cursorRoles = db.roles.find();
-
-while (cursorRoles.hasNext()) {
-  db.createCollection('groups');
-  let roleIndex = cursorRoles.next();
-  if (roleIndex.id === 'role-identity-manager') {
-    db.groups.insert({
-      id: 'group-identity-admin',
-      name: 'Identity Service Group Admin',
-      roles: [roleIndex._id],
-    });
-  }
-}
-
-// 5. Users
-
-let cursorGroups = db.groups.find();
-
-while (cursorGroups.hasNext()) {
-  db.createCollection('users');
-  let groupIndex = cursorGroups.next();
-  if (groupIndex.id === 'group-identity-admin') {
-    db.users.insert({
-      username: 'identity-admin',
-      password: '$2b$12$QuKqYtZoSf3lTohVlEUsVeu78pRe7XBG3ZYXcS0DE286gXz9UWoTS',
-      groups: [groupIndex._id],
-    });
-  }
-}
-=======
-let endpointsIDs = [];
-while ( cursor.hasNext() ) {
-  endpointsIDs.push(cursor.next()._id);
-}
-
-let roles = [
-  
-    db.createCollection('roles'),
-    db.roles.insert({
-      id: 'role-identity-manager',
-      name: 'Identity Manager',
-      endpoints: endpointsIDs
-    }),
-]
->>>>>>> wip
