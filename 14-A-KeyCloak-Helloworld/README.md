@@ -14,12 +14,6 @@ $ docker-compose up -d
 
 Uses the port 8080 by default
 
-# 1.2 Keycloak with Mysql database persistence
-
-```shell
-$ docker-compose -f dc-keycloak-mysql up -d
-```
-
 # 2. Operating with keycloak
 
 - Creates the realm (in the upper section): calculator
