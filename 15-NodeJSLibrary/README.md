@@ -31,7 +31,7 @@ We add the library in our dependencies:
 }
 ```
 
-# 4. Test program
+## 4. Test program
 
 In index.js I have implemented a mini program test
 
