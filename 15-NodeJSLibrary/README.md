@@ -66,4 +66,5 @@ Hello Arnold Schwarzenegger. How are you?
 
 https://stackoverflow.com/questions/23210437/npm-install-private-github-repositories-by-dependency-in-package-json
 
+https://medium.com/@anlijudavid/pasos-para-crear-una-librer%C3%ADa-para-nodejs-fa49b17558b8
 
