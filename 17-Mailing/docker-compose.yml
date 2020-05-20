@@ -2,11 +2,34 @@ version: '3.5'
 
 services:
   
-  test-mailhog:
-    container_name: test-mailhog
+  test-mail-nodejs:
+    build: .
+    image: test-mail-nodejs
+    container_name: test-mail-nodejs
+    command: npm start
+    environment:
+      MAIL_HOST: test-mail-mailhog
+      MAIL_PORT: 1025
+      MAIL_SECURE: 'false'
+      # We can comment this vars (MAIL_USER & MAIL_PASS) if we do not need it!
+      MAIL_USER: nouser
+      MAIL_PASS: nopass
+    networks:
+      - test-mail-network
+    depends_on:
+      - test-mail-mailhog
+    
+  test-mail-mailhog:
+    container_name: test-mail-mailhog
     image: mailhog/mailhog
-    restart: always
     ports:
       - 0.0.0.0:8026:8025
       - 0.0.0.0:1025:1025
+    networks:
+      - test-mail-network
+
+networks:
+  test-mail-network:
+    name: test-mail-network
+    driver: bridge
     

@@ -26,17 +26,16 @@ const sendMail = async ({ transporter, from, to, subject, text }) => {
 }
 
 const mailTransportOptions = {
-  host: 'localhost',
-  port: 1025,
-  secure: false,
-  user: 'a',
-  pass: 'b',
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  secure: (process.env.MAIL_SECURE === 'true'),
 };
 
-const mailTransportOptionsAlt = {
-  host: 'localhost',
-  port: 1025,
-  secure: false,
+if (process.env.MAIL_USER) {
+  mailTransportOptions.user = process.env.MAIL_USER;
+}
+if (process.env.MAIL_PASS) {
+  mailTransportOptions.pass = process.env.MAIL_PASS;
 }
 
 const mailOptions = {
@@ -54,20 +53,10 @@ mailOptions.transporter = transporter;
 
 sendMail(mailOptions)
   .then((result) => {
-    console.log(`--> Message sent with user and pass OK!\n`);
-    return true;
-  })
-  .then(() => {
-    console.log('--> Execution without user and pass...(they can not be passed in blank)');
-    // Execution without user and pass
-    const transporter = createTransport(mailTransportOptionsAlt);
-    mailOptions.transporter = transporter;
-    return sendMail(mailOptions);
-  })
-  .then((result) => {
-    console.log(`--> message sent without user and pass OK!`);
+    console.log(`--> Message sent OK!\n`);
     return true;
   })
   .catch((error) => {
+    console.error(`--> Message failed!\n`);
     console.error(error.stack);
   })
