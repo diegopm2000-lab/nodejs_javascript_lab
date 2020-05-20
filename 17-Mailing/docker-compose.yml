@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  
+  test-mailhog:
+    container_name: test-mailhog
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - 0.0.0.0:8026:8025
+      - 0.0.0.0:1025:1025
+    
