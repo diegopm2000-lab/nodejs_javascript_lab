@@ -12,8 +12,12 @@ services:
       MAIL_PORT: 1025
       MAIL_SECURE: 'false'
       # We can comment this vars (MAIL_USER & MAIL_PASS) if we do not need it!
-      MAIL_USER: nouser
-      MAIL_PASS: nopass
+      MAIL_USER: 'nouser'
+      MAIL_PASS: 'nopasswd'      
+      MAIL_FROM: 'sender@mailtest.com'
+      MAIL_TO: 'receiver@mailtest.com'
+      MAIL_SUBJECT: 'mail test'
+      MAIL_TEXT: 'This is a mail test'
     networks:
       - test-mail-network
     depends_on:

@@ -1,21 +1,28 @@
 #!/bin/sh
 
-# Configuration Source
 export MAIL_HOST="localhost"
 env | grep '^MAIL_HOST='
 
-# Spring Cloud Config Endpoint
 export MAIL_PORT="1025"
 env | grep '^MAIL_PORT='
 
-# Configuration File
 export MAIL_SECURE="false"
 env | grep '^MAIL_SECURE='
 
-# App Port
-export MAIL_USER="nouser"
-env | grep '^MAIL_USER='
+# export MAIL_USER="nouser"
+# env | grep '^MAIL_USER='
 
-# Api File
-export MAIL_PASS="nopass"
-env | grep '^MAIL_PASS='
+# export MAIL_PASS="nopass"
+# env | grep '^MAIL_PASS='
+
+export MAIL_FROM="sender@mailtest.com"
+env | grep '^MAIL_FROM='
+
+export MAIL_TO="receiver@mailtest.com"
+env | grep '^MAIL_TO='
+
+export MAIL_SUBJECT="mail test"
+env | grep '^MAIL_SUBJECT='
+
+export MAIL_TEXT="This is a mail test"
+env | grep '^MAIL_TEXT='

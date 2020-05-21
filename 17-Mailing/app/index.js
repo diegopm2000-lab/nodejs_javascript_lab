@@ -2,61 +2,62 @@
 
 const nodemailer = require("nodemailer");
 
-const createTransport = ({ host, port, secure, user, pass}) => {
-  console.log(`Creating Transport with options: host: ${host}, port: ${port}, secure: ${secure}, user: ${user}, pass: ${pass}`);
+const createTransport = () => {
+
+  const host = process.env.MAIL_HOST;
+  const port = process.env.MAIL_PORT;
+  const secure = (process.env.MAIL_SECURE === 'true');
+  const user = process.env.MAIL_USER;
+  const pass = process.env.MAIL_PASS;
+
+  console.log(`createTransport (IN)  --> env params: host: ${host}, port: ${port}, secure: ${secure}, user: ${user}, pass: ${pass}`);
 
   const options = { host, port, secure }
   // The user and pass can not be passed as blank if not required.
-  if (user) {
-    options.user = user;
-  }
-  if (pass) {
-    options.pass = pass;
+  let auth;
+  if (user && pass) {
+    auth = { user, pass }
+    options.auth = auth;
   }
 
-  console.log(`Inner mail options passed to nodemailer: ${JSON.stringify(options)}`);
+  console.log(`createTransport (MID) --> creating transport with options: ${JSON.stringify(options)}`);
   const transporter = nodemailer.createTransport(options);
-  console.log('Transport created OK!');
+  console.log('createTarnsport (MID) --> Transport created OK!');
+
+  console.log('createTransport (OUT) --> <<transporter>>\n');
   return transporter;
 }
 
-const sendMail = async ({ transporter, from, to, subject, text }) => {
-  console.log(`Sending mail with options: from: ${from}, to: ${to}, subject: ${subject}, text: ${text}`);
+const sendMail = async (transporter) => {
+
+  const from = process.env.MAIL_FROM;
+  const to = process.env.MAIL_TO;
+  const subject = process.env.MAIL_SUBJECT;
+  const text = process.env.MAIL_TEXT;
+
+  console.log(`sendMail (IN)  --> env params: from: ${from}, to: ${to}, subject: ${subject}, text: ${text}`);
+
+  console.log('sendMail (MID) --> sending mail...');
   await transporter.sendMail({ from, to, subject, text });
+  console.log('sendMail (MID) --> mail sent OK!');
+
+  console.log('sendMail (OUT) --> result: true\n');
+  return true;
 }
 
-const mailTransportOptions = {
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  secure: (process.env.MAIL_SECURE === 'true'),
-};
+// Main Execution
 
-if (process.env.MAIL_USER) {
-  mailTransportOptions.user = process.env.MAIL_USER;
-}
-if (process.env.MAIL_PASS) {
-  mailTransportOptions.pass = process.env.MAIL_PASS;
-}
+console.log('App (IN) --> Init\n')
+const transporter = createTransport();
 
-const mailOptions = {
-  from: '"Test Sender 👻" <testsender@mail.com>',
-  to: 'testreceiver@mail.com',
-  subject: 'mail test',
-  text: 'this is a mail test',
-}
-
-console.log('Execution with user and pass...');
-
-// Execution with user and pass
-const transporter = createTransport(mailTransportOptions);
-mailOptions.transporter = transporter;
-
-sendMail(mailOptions)
+sendMail(transporter)
   .then((result) => {
-    console.log(`--> Message sent OK!\n`);
     return true;
   })
   .catch((error) => {
-    console.error(`--> Message failed!\n`);
     console.error(error.stack);
+    return false;
   })
+  .finally(() => {
+    console.log('App (OUT)');
+  });
