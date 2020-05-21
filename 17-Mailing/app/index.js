@@ -38,11 +38,11 @@ const sendMail = async (transporter) => {
   console.log(`sendMail (IN)  --> env params: from: ${from}, to: ${to}, subject: ${subject}, text: ${text}`);
 
   console.log('sendMail (MID) --> sending mail...');
-  await transporter.sendMail({ from, to, subject, text });
+  const result = await transporter.sendMail({ from, to, subject, text });
   console.log('sendMail (MID) --> mail sent OK!');
 
-  console.log('sendMail (OUT) --> result: true\n');
-  return true;
+  console.log(`sendMail (OUT) --> result: ${JSON.stringify(result)}`);
+  return result;
 }
 
 // Main Execution
