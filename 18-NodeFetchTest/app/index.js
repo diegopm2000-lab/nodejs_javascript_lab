@@ -2,7 +2,6 @@
 
 const fetch = require('node-fetch');
 
-
 console.log('App (IN) --> Init\n')
 
 const endpoint = process.env.ENDPOINT;

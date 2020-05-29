@@ -1,0 +1,78 @@
+version: '3.5'
+
+services:
+  
+  server-tls:
+    build: ./server
+    image: server-tls
+    container_name: server-tls
+    command: npm start
+    ports:
+     - 0.0.0.0:8443:8443
+    environment:
+      PORT: 8443
+      KEY: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIICXQIBAAKBgQCz8dfKq67SC44i7iNoU7oXkMSGEMES1/iunc26ROMoQD4JXzkG
+        Sx5pSSUZQ1KcELU5Kak4vNNSWzLsG3jsfMNXO2ONGB3kaioVX4iQwzP6vNxrVzfd
+        eTqAuDnh7GZAQRmbHnoHRQcM6eP9YmcuWXbSvCmMSUIZ434lCTTKrk03KwIDAQAB
+        AoGASzRiGaQTFloZ92NLjQihF8Q7PkS2TKfSmTf+iUDNJz9iLgyMCqNOfHZDeQF3
+        /x3Ef7V3sezI7PyMlb0Nlti10oW7F6mdPhCDnsC9EuSOYKHSh9B5Kn+Ad/iR2xTe
+        cVq/On3XO4V0PjRnKGfp1Gn0xeembddx2Qokq9aAbjLQOEECQQDglDkB4n4cc+Hp
+        dzzmUVqnuKscEMuf4cfvH5FJO9RxlWv6B+dYe++dt+C5TO8F6Wh5yxdGUIqxcWO9
+        2FsC3IGbAkEAzR7yilgdcNHt9RtLXGpYACyKPIbX5QVICeTpmFQHkWAh72XUqOVU
+        b4ubUGIxiHE+//MlRL7lnPUgmUocTmIBsQJAGpMPh9yQRbektOaqKyrXSl98x+5o
+        2ftymCYpH/xXcDVZOJX01zCbMxOOIP8sjYuIFFlm4KgpMUQUpGNUqasEHwJBAIdI
+        DOBvIuOgoNcR7E8EGAvtVDJ9IHB8XjmgTuvXJ7Kae2cfevT1Yw26PnHygQai4dD+
+        tKq1WEx/YsOWnDqZ6tECQQDHgDVGjAf+2sMPAhxKvlmHmZNZasxwiKQ7Pj5v1e4z
+        jisaWQmVGEiU+bEPsIcSdruFay6wVm+PvGOgItzloKMJ
+        -----END RSA PRIVATE KEY-----
+      CERT: |
+        -----BEGIN CERTIFICATE-----
+        MIICNjCCAZ8CFENjD0X/NuYC5Z7PzLIUrcyHaf8tMA0GCSqGSIb3DQEBCwUAMFox
+        CzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRl
+        cm5ldCBXaWRnaXRzIFB0eSBMdGQxEzARBgNVBAMMCnNlcnZlci10bHMwHhcNMjAw
+        NTI4MTY1ODQ4WhcNMjAwNjI3MTY1ODQ4WjBaMQswCQYDVQQGEwJBVTETMBEGA1UE
+        CAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRk
+        MRMwEQYDVQQDDApzZXJ2ZXItdGxzMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKB
+        gQCz8dfKq67SC44i7iNoU7oXkMSGEMES1/iunc26ROMoQD4JXzkGSx5pSSUZQ1Kc
+        ELU5Kak4vNNSWzLsG3jsfMNXO2ONGB3kaioVX4iQwzP6vNxrVzfdeTqAuDnh7GZA
+        QRmbHnoHRQcM6eP9YmcuWXbSvCmMSUIZ434lCTTKrk03KwIDAQABMA0GCSqGSIb3
+        DQEBCwUAA4GBAD0VjXSOGpPe7oXwwPVhtehmtykW1QLBC6kIt3rFXiCAVWnuSQcu
+        HEjmDpUxBoGfDVlYag8iMG2CKcPCRoc2v2ku6S4MDSx/88wrgdByAzWmHfbWoIzE
+        ynF+tGL7DyTPj6yLq6sWnJCHQ4p0G55YtWCb0//sAEw8JBT+VtWEeqEK
+        -----END CERTIFICATE-----
+    networks:
+      - test-tls
+
+  client-tls:
+    build: ./client
+    image: client-tls
+    container_name: client-tls
+    command: npm start
+    environment:
+      ENDPOINT: https://server-tls:8443/hellotls
+      CERT: |
+        -----BEGIN CERTIFICATE-----
+        MIICNjCCAZ8CFENjD0X/NuYC5Z7PzLIUrcyHaf8tMA0GCSqGSIb3DQEBCwUAMFox
+        CzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRl
+        cm5ldCBXaWRnaXRzIFB0eSBMdGQxEzARBgNVBAMMCnNlcnZlci10bHMwHhcNMjAw
+        NTI4MTY1ODQ4WhcNMjAwNjI3MTY1ODQ4WjBaMQswCQYDVQQGEwJBVTETMBEGA1UE
+        CAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRk
+        MRMwEQYDVQQDDApzZXJ2ZXItdGxzMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKB
+        gQCz8dfKq67SC44i7iNoU7oXkMSGEMES1/iunc26ROMoQD4JXzkGSx5pSSUZQ1Kc
+        ELU5Kak4vNNSWzLsG3jsfMNXO2ONGB3kaioVX4iQwzP6vNxrVzfdeTqAuDnh7GZA
+        QRmbHnoHRQcM6eP9YmcuWXbSvCmMSUIZ434lCTTKrk03KwIDAQABMA0GCSqGSIb3
+        DQEBCwUAA4GBAD0VjXSOGpPe7oXwwPVhtehmtykW1QLBC6kIt3rFXiCAVWnuSQcu
+        HEjmDpUxBoGfDVlYag8iMG2CKcPCRoc2v2ku6S4MDSx/88wrgdByAzWmHfbWoIzE
+        ynF+tGL7DyTPj6yLq6sWnJCHQ4p0G55YtWCb0//sAEw8JBT+VtWEeqEK
+        -----END CERTIFICATE-----
+
+    networks:
+      - test-tls
+
+networks:
+  test-tls:
+    name: test-tls
+    driver: bridge
+      
