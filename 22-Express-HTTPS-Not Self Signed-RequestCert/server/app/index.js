@@ -11,11 +11,11 @@ const ca = process.env.CA; // In certificates not self signed, we need to add th
 const options = { 
   key, 
   cert, 
-  ca,
+  ca, 
+  requestCert: true,
   rejectUnauthorized: true 
 };
-
-console.log(`--> App (IN): --> params IN:\nport: ${port}, \nkey: ${key}, \ncert: ${cert}, \nca: ${ca}, requestCert: <<undefined>> === false, rejectUnauthorized: true`);
+console.log(`--> App (IN): --> params IN:\nport: ${port}, \nkey: ${key}, \ncert: ${cert}, \nca: ${ca}, requestCert: true, rejectUnauthorized: true`);
 
 const app = express();
 

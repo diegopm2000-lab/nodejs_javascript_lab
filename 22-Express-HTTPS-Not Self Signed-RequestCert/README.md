@@ -1,6 +1,8 @@
 # Express Https Test
 
-Example of TLS using a tls-server and tls-client, with a NOT self signed certificate.
+Example of TLS using a tls-server and tls-client, with a NOT self signed certificate and in this case, the server will request to the client a certificate.
+
+We will use a CA, and using this CA, we will create the certificates for the server and the clients.
 
 ## 1. Download the CA configuration file
 
@@ -65,7 +67,80 @@ openssl x509 -req -extfile server.cnf -days 999 -passin "pass:password" -in serv
 
 Creating the __server-crt.pem__ file as server certificate (public key signed)
 
-## 6. Our application
+## 6. Generate the client certificate
+
+### 6.1 Generate two private keys for the clients
+
+```shell
+$ openssl genrsa -out client1-key.pem 4096
+```
+
+this will generate the __client1-key.pem__ (private key of client 1)
+
+```shell
+$ openssl genrsa -out client2-key.pem 4096
+```
+
+this will generate the __client1-key.pem__ (private key of client 2)
+
+### 6.2 Get two configurations pregenerated
+
+In this example, the server will request to the client a valid certificate.
+
+```shell
+$ wget https://raw.githubusercontent.com/anders94/https-authorized-clients/master/keys/client1.cnf
+```
+
+this will obtain the __client1.cnf__
+
+```
+$ wget https://raw.githubusercontent.com/anders94/https-authorized-clients/master/keys/client2.cnf
+```
+
+this will obtain the __client1.cnf__
+
+### 6.3 Create a pair of certificate signing requests
+
+```shell
+$ openssl req -new -config client1.cnf -key client1-key.pem -out client1-csr.pem
+```
+
+this will generate the __client1-csr.pem__
+
+```shell
+$ openssl req -new -config client2.cnf -key client2-key.pem -out client2-csr.pem
+```
+
+this will generate the __client2-csr.pem__
+
+### 6.4 Sign our client certs
+
+```shell
+openssl x509 -req -extfile client1.cnf -days 999 -passin "pass:password" -in client1-csr.pem -CA ca-crt.pem -CAkey ca-key.pem -CAcreateserial -out client1-crt.pem
+```
+
+this will generate the __client1-crt.pem__
+
+```shell
+openssl x509 -req -extfile client2.cnf -days 999 -passin "pass:password" -in client2-csr.pem -CA ca-crt.pem -CAkey ca-key.pem -CAcreateserial -out client2-crt.pem
+```
+
+this will generate the __client2-crt.pem__
+
+### 6.5 Verify our signed certificates
+
+```shell
+openssl verify -CAfile ca-crt.pem client1-crt.pem
+
+client1-crt.pem: OK
+```
+```shell
+openssl verify -CAfile ca-crt.pem client2-crt.pem
+
+client2-crt.pem: OK
+```
+
+## 7. Our application
 
 Our application have two containers:
 
@@ -74,9 +149,9 @@ Our application have two containers:
 
 The server-tls needs to contain the private-key and public-key mounted and the client only needs the public-key.
 
-## 7 .Executing all locally
+## 8 .Executing all locally
 
-### 7.1 Run the server
+### 8.1 Run the server
 
 go to server folder and execute:
 
@@ -207,12 +282,12 @@ EdAfGQNKTF8hneVF8S5x7MYlAPchzmWrWxUYu1Mrkg==
 entering in hellotls...
 ```
 
-### 7.2 Run the client
+### 8.2 Run the client
 
 go to client folder and execute:
 
 ```shell
-$ source ./init.sh
+$ source ./init_client1.sh
 $ npm run start
 
 App (IN) --> Init
@@ -231,9 +306,9 @@ And viewing the log in the server, you have obtained:
 result: {"message":"Hello world express with https!"}
 ```
 
-## 8 .Executing all in docker
+## 9 .Executing all in docker
 
-### 8.1 Run the server
+### 9.1 Run the server
 
 Go to root folder and execute:
 
@@ -241,7 +316,7 @@ Go to root folder and execute:
 $ docker-compose up -d server-tls
 ```
 
-### 8.2 Run the client
+### 9.2 Run the client
 
 Go to root folder and execute:
 
