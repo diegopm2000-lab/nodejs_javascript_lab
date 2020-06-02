@@ -145,5 +145,17 @@ for (const ca of trustedCa) {
 Es una forma de cargar un array, se puede hacer en el https.globalAgent.options o directamente en un options, que de todas formas
 hay que pasarlo cuando se crea el servidor
 
+## 11. Arranque de node usando  --use-openssl-ca
+
+Se pone en el arranque de node esta variable en el package.json
+
+```json
+"scripts": {
+    "start": "node --use-openssl-ca app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+
+Funciona
 
 
