@@ -4,36 +4,42 @@ se basa en el ejemplo 22, donde tenemos server y client y ambos se intentan veri
 
 ## 1. El servidor exige certificado al cliente
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
-- ca-cert          - ca-cert
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
+| ca-cert          |   ca-cert       |
+
+En esta tabla se muestran siempre los certificados que se montan programaticamente en el Agent de NodeJS (cert, key y ca).
 
 Funciona
 
 ## 2. Quito las CA en los dos lados
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
 
 Falla: Unable to verify the first certificate
 
 ## 3. Dejo solo la CA en el cliente (pero sigo dejando que el servidor exija el certificado al cliente)
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
-                   - ca-cert
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
+|                  |   ca-cert       |
 
 Falla
 
 ## 4. Igual, pero ya no exige el servidor el certificado al cliente
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
-                   - ca-cert
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
+|                  |   ca-cert       |
 
 Funciona
 
@@ -41,9 +47,10 @@ Esto parece demostrar que la parte que necesite verificar la identidad del otro,
 
 ## 5. Quito el ca-cert del cliente Añadiendo el certificado de la CA a la carpeta de docker 
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
 
 ### 5.1 Añadiendolo a localhost:8443
                   
@@ -89,12 +96,14 @@ Falla
 
 ## 7. Montandolo en la imagen del servidor, pero dejandolo en el cliente y exigiendo el certificado al cliente
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
-                   - ca-cert
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
+|                  |   ca-cert       |
 
-He añadido el certificado al Dockerfile del server. A partir de aquí todas las pruebas se hacen con esta modificacion
+He añadido el certificado al Dockerfile del server. A partir de aquí todas las pruebas se hacen con esta modificacion en las imágenes, que consiste
+en montar el certificado de la CA en la ruta de certificados del docker.
 
 ```RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 COPY ca-crt.pem /usr/local/share/ca-certificates/DIEGO.crt
@@ -105,10 +114,11 @@ FALLA
 
 ## 8. Usando la variable de entorno NODE_EXTRA_CA_CERTS para el server
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
-                   - ca-cert
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
+|                  |   ca-cert       |
 
 Añado esta variable de entorno al server, que lo que hace es añadir el fichero que le pasemos a las CA que tiene hardcodeadas por defecto NodeJS.
 
@@ -118,15 +128,22 @@ FUNCIONA
 
 ## 9. Usando la variable de entorno NODE_EXTRA_CA_CERTS para el cliente
 
-Server             Client
-- server-cert      - client-cert 
-- server-key       - client-key
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
 
 NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-cert-DIEGO.pem
 
 FUNCIONA
                 
 ## 10. Cargo el certificado que se instala mediante el dockerfile en el server de forma programatica
+
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
+| ca-cert          |                 |
 
 ```javascript
 // Loading manually
@@ -147,6 +164,11 @@ hay que pasarlo cuando se crea el servidor
 
 ## 11. Arranque de node usando  --use-openssl-ca
 
+|   Server         |    Client       |
+|------------------|-----------------|
+| server-cert      |   client-cert   |
+| server-key       |   client-key    |
+
 Se pone en el arranque de node esta variable en el package.json
 
 ```json
@@ -157,5 +179,3 @@ Se pone en el arranque de node esta variable en el package.json
 ```
 
 Funciona
-
-
