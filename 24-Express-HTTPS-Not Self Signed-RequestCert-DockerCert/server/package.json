@@ -4,8 +4,8 @@
   "description": "Express tls",
   "main": "index.js",
   "scripts": {
-    "start": "node app/index.js",
-    "start-ALT": "node --use-openssl-ca app/index.js",
+    "start-OLD": "node app/index.js",
+    "start": "node --use-openssl-ca app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Diego Perez Molinero",
