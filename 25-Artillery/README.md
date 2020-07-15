@@ -1,2 +1,0 @@
-# Dockerized artillery
-
