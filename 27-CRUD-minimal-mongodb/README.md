@@ -28,12 +28,20 @@ Create a new car
 
 ```shell
 curl --request POST http://localhost:3000/cars --header "Content-Type: application/json" --data-raw '{"brand":"Opel", "car":"Astra"}' -i
+
+curl --request POST http://localhost:3000/cars --header "Content-Type: application/json" --data-raw '{"brand":"Renault", "car":"Megane"}' -i
+
+curl --request POST http://localhost:3000/cars --header "Content-Type: application/json" --data-raw '{"brand":"Ford", "car":"Focus"}' -i
+
+curl --request POST http://localhost:3000/cars --header "Content-Type: application/json" --data-raw '{"brand":"Audi", "car":"A3"}' -i
+
+curl --request POST http://localhost:3000/cars --header "Content-Type: application/json" --data-raw '{"brand":"Mercedes", "car":"A Class"}' -i
 ```
 
 Update a car
 
 ```shell
-curl --request PUT http://localhost:3000/cars/5 --header "Content-Type: application/json" --data-raw '{"id": 5, "brand":"Ford","car":"Focus"}' -i
+curl --request PUT http://localhost:3000/cars/1 --header "Content-Type: application/json" --data-raw '{"brand":"Peugeot","car":"308"}' -i
 ```
 
 Delete a car

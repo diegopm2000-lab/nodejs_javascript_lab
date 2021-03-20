@@ -14,19 +14,9 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
-app.listen(3000);
-
-// ///////////////////////////////////////////////////
-// MOCKED DATABASE
-// ///////////////////////////////////////////////////
-
-const cars = [
-  { id: 0, brand: 'Peugeot', car: '308' },
-  { id: 1, brand: 'Renault', car: 'Megane' },
-  { id: 2, brand: 'Audi', car: 'A3' },
-  { id: 3, brand: 'BMW', car: 'Serie 1' },
-  { id: 4, brand: 'Mercedes', car: 'A Class' },
-];
+app.listen(3000, () => {
+  console.log('Express started at port: 3000');
+});
 
 // ///////////////////////////////////////////////////
 // ERROR MESSAGES
@@ -35,6 +25,93 @@ const cars = [
 const ID_MUST_BE_A_NUMBER = 'Id must be a number';
 const OBJECT_NOT_FOUND = 'Object not found';
 const DATA_IS_NOT_VALID = 'Data is not valid';
+
+// ///////////////////////////////////////////////////
+// MOCKEDDB REPOSITORY
+// ///////////////////////////////////////////////////
+
+const cars = [
+  { id: 0, brand: 'Opel', car: 'Astra' },
+  { id: 1, brand: 'Renault', car: 'Megane' },
+  { id: 2, brand: 'Ford', car: 'Focus' },
+  { id: 3, brand: 'Audi', car: 'A3' },
+  { id: 4, brand: 'Mercedes', car: 'A Class' },
+];
+
+function findAll() {
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(cars);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function findById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(cars.find((element) => element.id === id));
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function insertOne(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      cars.push(data);
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function updateOne(id, data) {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log(`UpdateOne with id: ${id}, data: ${JSON.stringify(data)}`);
+
+      const index = cars.findIndex((element) => element.id === id);
+      if (index === -1) {
+        reject(OBJECT_NOT_FOUND);
+      }
+      cars[index] = data;
+
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function deleteOne(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      const index = cars.findIndex((element) => element.id === id);
+      if (index === -1) {
+        reject(OBJECT_NOT_FOUND);
+      }
+      cars.splice(index, 1);
+
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function count() {
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(cars.length);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
 // ///////////////////////////////////////////////////
 // UTILITY FUNCTIONS
@@ -69,54 +146,71 @@ function errorHandler(error, res) {
     res.status(404).json({ message: OBJECT_NOT_FOUND });
   } else if (error.message === DATA_IS_NOT_VALID) {
     res.status(400).json({ message: DATA_IS_NOT_VALID });
+  } else {
+    res.status(500).json({ message: 'internal error' });
   }
-
-  res.status(500).json({ message: 'internal error' });
 }
 
 // API
 
-app.get('/cars/:id', (req, res) => {
+app.get('/cars', async (req, res) => {
+  try {
+    console.log('Getting all cars...');
+
+    const result = await findAll();
+
+    res.json(result);
+  } catch (error) {
+    console.error(error.stack);
+    errorHandler(error, res);
+  }
+});
+
+app.get('/cars/:id', async (req, res) => {
   try {
     const { id } = req.params;
     console.log(`Getting car by id: ${req.params.id}`);
 
     const innerId = checkValidId(id);
-    checkObjectFound(id);
 
-    res.json(cars[innerId]);
+    const result = await findById(innerId);
+
+    checkObjectFound(result);
+
+    res.json(result);
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });
 
-app.get('/cars', (req, res) => {
-  console.log('Getting all cars...');
-  res.json(cars);
-});
-
-app.post('/cars', (req, res) => {
+app.post('/cars', async (req, res) => {
   try {
     const data = JSON.parse(JSON.stringify(req.body));
     console.log(`Adding a new car: ${JSON.stringify(data)}`);
 
     checkData(data);
 
+    const numberOfCars = await count();
+
     const newCar = {
-      id: cars.length,
+      id: numberOfCars,
       brand: data.brand,
       car: data.car,
     };
 
-    cars.push(newCar);
+    await insertOne(newCar);
 
-    res.status(201).json(cars[newCar.id]);
+    const result = await findById(newCar.id);
+
+    res.status(201).json(result);
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });
 
-app.put('/cars/:id', (req, res) => {
+app.put('/cars/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -132,26 +226,29 @@ app.put('/cars/:id', (req, res) => {
       car: data.car,
     };
 
-    cars[innerId] = updatedCar;
+    await updateOne(innerId, updatedCar);
 
-    res.json(cars[Number(id)]);
+    const result = await findById(updatedCar.id);
+
+    res.json(result);
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });
 
-app.delete('/cars/:id', (req, res) => {
+app.delete('/cars/:id', async (req, res) => {
   try {
     const { id } = req.params;
     console.log(`Deleting car by id: ${id}`);
 
     const innerId = checkValidId(id);
-    checkObjectFound(id);
 
-    cars.splice(innerId, 1);
+    await deleteOne(innerId);
 
     res.status(204).send();
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });

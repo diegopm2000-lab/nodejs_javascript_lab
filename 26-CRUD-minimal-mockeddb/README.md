@@ -27,13 +27,13 @@ curl --request GET http://localhost:3000/cars/1 -i
 Create a new car
 
 ```shell
-curl --request POST http://localhost:3000/cars --header "Content-Type: application/json" --data-raw '{"brand":"Opel", "car":"Astra"}' -i
+curl --request POST http://localhost:3000/cars --header "Content-Type: application/json" --data-raw '{"brand":"Porsche", "car":"911"}' -i
 ```
 
 Update a car
 
 ```shell
-curl --request PUT http://localhost:3000/cars/5 --header "Content-Type: application/json" --data-raw '{"id": 5, "brand":"Ford","car":"Focus"}' -i
+curl --request PUT http://localhost:3000/cars/5 --header "Content-Type: application/json" --data-raw '{"id": 5, "brand":"Dodge","car":"Challenger"}' -i
 ```
 
 Delete a car

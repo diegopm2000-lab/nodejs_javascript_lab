@@ -2,6 +2,42 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const { MongoClient } = require('mongodb');
+const assert = require('assert');
+
+// ///////////////////////////////////////////////////
+// MONGO DATABASE
+// ///////////////////////////////////////////////////
+
+const url = 'mongodb://admin:password@localhost:27017';
+const client = new MongoClient(url, { useUnifiedTopology: true });
+const dbName = 'carsDB';
+const collectionName = 'cars';
+
+let mongoDB;
+
+function dataBaseConnect() {
+  return new Promise((resolve, reject) => {
+    try {
+      client.connect((err) => {
+        assert.equal(null, err);
+        console.log('Connected successfully to server');
+
+        const db = client.db(dbName);
+        console.log('Connected successfully to mongodb database');
+        resolve(db);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+// eslint-disable-next-line no-unused-vars
+function dataBaseClose() {
+  client.close();
+  console.log('Disconnected successfully from mongodb database');
+}
 
 // ///////////////////////////////////////////////////
 // BOOTSTRAP
@@ -14,19 +50,13 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log('Express started at port: 3000');
+});
 
-// ///////////////////////////////////////////////////
-// MOCKED DATABASE
-// ///////////////////////////////////////////////////
-
-const cars = [
-  { id: 0, brand: 'Peugeot', car: '308' },
-  { id: 1, brand: 'Renault', car: 'Megane' },
-  { id: 2, brand: 'Audi', car: 'A3' },
-  { id: 3, brand: 'BMW', car: 'Serie 1' },
-  { id: 4, brand: 'Mercedes', car: 'A Class' },
-];
+(async () => {
+  mongoDB = await dataBaseConnect();
+})();
 
 // ///////////////////////////////////////////////////
 // ERROR MESSAGES
@@ -35,6 +65,103 @@ const cars = [
 const ID_MUST_BE_A_NUMBER = 'Id must be a number';
 const OBJECT_NOT_FOUND = 'Object not found';
 const DATA_IS_NOT_VALID = 'Data is not valid';
+
+// ///////////////////////////////////////////////////
+// MONGODB REPOSITORY
+// ///////////////////////////////////////////////////
+
+function findAll() {
+  return new Promise((resolve, reject) => {
+    try {
+      mongoDB.collection(collectionName)
+        .find({})
+        .toArray((err, data) => {
+          // eslint-disable-next-line no-unused-expressions
+          err ? reject(err) : resolve(data);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function findById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      mongoDB.collection(collectionName)
+        .find({ id })
+        .limit(1)
+        .toArray((err, data) => {
+          // eslint-disable-next-line no-unused-expressions
+          err ? reject(err) : resolve(data[0]);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function insertOne(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      mongoDB.collection(collectionName)
+        .insertOne(data, (err, res) => {
+          // eslint-disable-next-line no-unused-expressions
+          err ? reject(err) : resolve(res);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function updateOne(id, data) {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log(`UpdateOne with id: ${id}, data: ${JSON.stringify(data)}`);
+      mongoDB.collection(collectionName)
+        .updateOne({ id }, { $set: data }, (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          if (res.matchedCount === 0) {
+            reject(new Error(OBJECT_NOT_FOUND));
+          }
+          resolve(true);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function deleteOne(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      mongoDB.collection(collectionName)
+        .deleteOne({ id }, (err, res) => {
+          // eslint-disable-next-line no-unused-expressions
+          err ? reject(err) : resolve(res);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function count() {
+  return new Promise((resolve, reject) => {
+    try {
+      mongoDB.collection(collectionName)
+        .count({}, (err, res) => {
+          // eslint-disable-next-line no-unused-expressions
+          err ? reject(err) : resolve(res);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
 // ///////////////////////////////////////////////////
 // UTILITY FUNCTIONS
@@ -48,8 +175,8 @@ function checkValidId(id) {
   return Number(id);
 }
 
-function checkObjectFound(id) {
-  if (!cars[id]) {
+function checkObjectFound(obj) {
+  if (!obj) {
     throw new Error(OBJECT_NOT_FOUND);
   }
 
@@ -69,61 +196,77 @@ function errorHandler(error, res) {
     res.status(404).json({ message: OBJECT_NOT_FOUND });
   } else if (error.message === DATA_IS_NOT_VALID) {
     res.status(400).json({ message: DATA_IS_NOT_VALID });
+  } else {
+    res.status(500).json({ message: 'internal error' });
   }
-
-  res.status(500).json({ message: 'internal error' });
 }
 
 // API
 
-app.get('/cars/:id', (req, res) => {
+app.get('/cars', async (req, res) => {
+  try {
+    console.log('Getting all cars...');
+
+    const result = await findAll();
+
+    res.json(result);
+  } catch (error) {
+    console.error(error.stack);
+    errorHandler(error, res);
+  }
+});
+
+app.get('/cars/:id', async (req, res) => {
   try {
     const { id } = req.params;
     console.log(`Getting car by id: ${req.params.id}`);
 
     const innerId = checkValidId(id);
-    checkObjectFound(id);
 
-    res.json(cars[innerId]);
+    const result = await findById(innerId);
+
+    checkObjectFound(result);
+
+    res.json(result);
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });
 
-app.get('/cars', (req, res) => {
-  console.log('Getting all cars...');
-  res.json(cars);
-});
-
-app.post('/cars', (req, res) => {
+app.post('/cars', async (req, res) => {
   try {
     const data = JSON.parse(JSON.stringify(req.body));
     console.log(`Adding a new car: ${JSON.stringify(data)}`);
 
     checkData(data);
 
+    const numberOfCars = await count();
+
     const newCar = {
-      id: cars.length,
+      id: numberOfCars,
       brand: data.brand,
       car: data.car,
     };
 
-    cars.push(newCar);
+    await insertOne(newCar);
 
-    res.status(201).json(cars[newCar.id]);
+    const result = await findById(newCar.id);
+
+    res.status(201).json(result);
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });
 
-app.put('/cars/:id', (req, res) => {
+app.put('/cars/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
     console.log(`Updating a car with id: ${id} and data: ${JSON.stringify(data)}`);
 
     const innerId = checkValidId(id);
-    checkObjectFound(id);
     checkData(data);
 
     const updatedCar = {
@@ -132,26 +275,30 @@ app.put('/cars/:id', (req, res) => {
       car: data.car,
     };
 
-    cars[innerId] = updatedCar;
+    await updateOne(innerId, updatedCar);
+    console.log('updated');
 
-    res.json(cars[Number(id)]);
+    const result = await findById(updatedCar.id);
+
+    res.json(result);
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });
 
-app.delete('/cars/:id', (req, res) => {
+app.delete('/cars/:id', async (req, res) => {
   try {
     const { id } = req.params;
     console.log(`Deleting car by id: ${id}`);
 
     const innerId = checkValidId(id);
-    checkObjectFound(id);
 
-    cars.splice(innerId, 1);
+    await deleteOne(innerId);
 
     res.status(204).send();
   } catch (error) {
+    console.error(error.stack);
     errorHandler(error, res);
   }
 });
