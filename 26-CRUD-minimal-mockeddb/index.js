@@ -3,6 +3,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+// ///////////////////////////////////////////////////
+// BOOTSTRAP
+// ///////////////////////////////////////////////////
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -12,6 +16,10 @@ app.use(bodyParser.urlencoded({
 
 app.listen(3000);
 
+// ///////////////////////////////////////////////////
+// MOCKED DATABASE
+// ///////////////////////////////////////////////////
+
 const cars = [
   { id: 0, brand: 'Peugeot', car: '308' },
   { id: 1, brand: 'Renault', car: 'Megane' },
@@ -20,9 +28,17 @@ const cars = [
   { id: 4, brand: 'Mercedes', car: 'A Class' },
 ];
 
+// ///////////////////////////////////////////////////
+// ERROR MESSAGES
+// ///////////////////////////////////////////////////
+
 const ID_MUST_BE_A_NUMBER = 'Id must be a number';
 const OBJECT_NOT_FOUND = 'Object not found';
 const DATA_IS_NOT_VALID = 'Data is not valid';
+
+// ///////////////////////////////////////////////////
+// UTILITY FUNCTIONS
+// ///////////////////////////////////////////////////
 
 function checkValidId(id) {
   if (Number.isNaN(Number(id))) {

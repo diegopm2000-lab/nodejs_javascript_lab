@@ -1,4 +1,4 @@
-# CRUD in NodeJS minimal (database mocked & internal arch less)
+# CRUD in NodeJS minimal (mocked database & internal arch less)
 
 Using Express as http framework.
 
