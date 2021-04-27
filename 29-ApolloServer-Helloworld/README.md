@@ -1,4 +1,4 @@
-# Graphql HelloWorld
+# ApolloServer HelloWorld
 
 ## 1. Install the program
 
@@ -28,11 +28,13 @@ http://localhost:4000/graphql
 
 And get the next result:
 
+```json
 {
   "data": {
     "hello": "Hello world!"
   }
 }
+```
 
 ## 5. Test the hello query with curl:
 
@@ -45,6 +47,3 @@ curl 'http://localhost:4000/graphql' -H 'Content-Type: application/json' -H 'Acc
 ![Headers](./images/headers.png)
 
 ![Body](./images/body.png)
-
-
-
