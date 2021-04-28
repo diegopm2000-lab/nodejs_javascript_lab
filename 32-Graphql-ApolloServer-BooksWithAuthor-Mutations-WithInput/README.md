@@ -1,4 +1,4 @@
-# ApolloServer Books with authors example
+# ApolloServer Books with authors - Mutations with input types
 
 ## 1. Install the program
 
