@@ -1,4 +1,4 @@
-# ApolloServer Books with authors example
+# ApolloServer - Adding Subscriptions
 
 ## 1. Install the program
 
