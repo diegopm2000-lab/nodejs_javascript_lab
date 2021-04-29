@@ -22,7 +22,7 @@ http://localhost:4000/graphql
 
 In the previous example we created this mutation:
 
-```
+```graphql
 type Mutation {
   addBook(title: String, author: String): Book
 }
@@ -30,7 +30,7 @@ type Mutation {
 
 Now, we can use a input type
 
-```
+```graphql
 type Mutation {
   addBook(book: PostInput): Book
 }
@@ -47,7 +47,7 @@ __Note__: Do not use the same input type for both queries and mutations. In many
 
 Then, our mutation in playground will be:
 
-```
+```graphql
 mutation CreateBook {
   addBook(book: { title: "Solaris", author: "Stanislaw Lem"}) {
     title

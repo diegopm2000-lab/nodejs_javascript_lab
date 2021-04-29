@@ -20,7 +20,7 @@ http://localhost:4000/graphql
 
 ## 4. Test the hello query in playground
 
-```
+```graphql
 {
     hello
 }
@@ -36,7 +36,7 @@ And get the next result:
 }
 ```
 
-## 5. Test the hello query with curl:
+## 5. Test the hello query with curl
 
 ```shell
 curl 'http://localhost:4000/graphql' -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"query":"{ hello }"}'

@@ -22,7 +22,7 @@ http://localhost:4000/graphql
 
 Query with the books and authors at the same time
 
-```
+```graphql
 query GetBooksAndAuthors {
   books {
     title
@@ -67,10 +67,9 @@ And get the next result:
 
 ## 5. Test in playground an alternative query
 
-
 We can choose to obtain the books, with the title and the name of the author
 
-```
+```graphql
 query GetBooks {
   books {
     title
@@ -118,7 +117,7 @@ And get the next result:
 
 ## 6. Test in playground a mutation
 
-```
+```graphql
 mutation CreateBook {
   addBook(title: "Solaris", author: "Stanislaw Lem") {
     title

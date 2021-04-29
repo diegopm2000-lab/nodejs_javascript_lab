@@ -20,7 +20,7 @@ http://localhost:4000/graphql
 
 ## 4. Test in playground
 
-```
+```graphql
 {
   books {
     title,
@@ -50,10 +50,9 @@ And get the next result:
 
 ## 5. Test in playground an alternative query
 
-
 We can choose to obtain only the book titles:
 
-```
+```graphql
 {
   books {
     title,
