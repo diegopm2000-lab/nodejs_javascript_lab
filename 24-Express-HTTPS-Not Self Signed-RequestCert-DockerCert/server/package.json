@@ -1,0 +1,21 @@
+{
+  "name": "exoress-tls",
+  "version": "1.0.0",
+  "description": "Express tls",
+  "main": "index.js",
+  "scripts": {
+    "start-OLD": "node app/index.js",
+    "start": "node --use-openssl-ca app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Diego Perez Molinero",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  
+  nodefetch-test:
+    build: .
+    image: nodefetch-test
+    container_name: nodefetch-test
+    command: npm start
+    environment:
+      ENDPOINT: https://www.elmundo.es
+      

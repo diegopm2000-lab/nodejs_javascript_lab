@@ -1,0 +1,32 @@
+{
+  "name": "gamecollector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "node_modules/.bin/eslint 'src/**/*.js'",
+    "server": "concurrently -k npm:server:*",
+    "server:gamesystems": "nodemon src/gamesystem/gamesystem.controller.js",
+    "server:graphql": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "dependencies": {
+    "@apollo/federation": "^0.23.2",
+    "@apollo/gateway": "^0.26.3",
+    "apollo-server": "^2.23.0",
+    "concurrently": "^6.0.2",
+    "deep-equal": "^2.0.5",
+    "graphql": "^15.5.0",
+    "json-server": "^0.16.3",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.7",
+    "uniqid": "^5.3.0"
+  }
+}

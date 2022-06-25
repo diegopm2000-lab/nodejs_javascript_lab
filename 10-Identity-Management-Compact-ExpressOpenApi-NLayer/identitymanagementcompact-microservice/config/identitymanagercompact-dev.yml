@@ -1,0 +1,17 @@
+appName: Identity Management Compact
+description: RBAC Management Compact - Express Open API - OAS 3 - N Layer
+environment: dev
+infrastructure:
+  logger:
+    level: debug
+  authentication:
+    tokenExpiration: 30 #minutes
+    tokenSecret: wearethebeast
+  express:
+    servertimeout: 60000 #miliseconds
+    port: 8080
+    enableCors: true
+  mongo:
+    mongoURL: mongodb://admin:admin@localhost:27019
+    database: identityManagementCompactDB
+    reconnectTime: 20000 #miliseconds

@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+
+  configloader-springcfgserver:
+    image: diegopm2000/springcloudconfigserver
+    container_name: encryptionexample-springcfgserver
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/diegopm2000-boilerplate/configurations.git
+      - ENCRYPT_KEY=myencryptkey

@@ -1,0 +1,129 @@
+openapi: 3.0.0
+info:
+  title: Express Open Api Calculator
+  description: Express Open Api Calculator
+  version: 1.0.0
+paths:
+  /add:
+    get:
+      operationId: add
+      summary: Add two numbers
+      description: Add two numbers
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the sum
+          required: true
+          schema:
+            type: integer
+        - name: b
+          in: query
+          description: operand b of the sum
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        default:
+          $ref: "#/components/responses/Error"
+  /substract:
+    get:
+      operationId: substract
+      summary: Substract two numbers
+      description: Substract two numbers
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the substraction
+          required: true
+          schema:
+            type: integer
+        - name: b
+          in: query
+          description: operand b of the substraction
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        default:
+          $ref: "#/components/responses/Error"
+  /multiply:
+    get:
+      operationId: multiply
+      summary: Multiply two numbers
+      description: Multiply two numbers
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the multiplication
+          required: true
+          schema:
+            type: integer
+        - name: b
+          in: query
+          description: operand b of the multiplication
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        default:
+          $ref: "#/components/responses/Error"
+  /divide:
+    get:
+      operationId: divide
+      summary: Divide two numbers
+      description: Divide two numbers
+      parameters:
+        - name: a
+          in: query
+          description: operand a of the division
+          required: true
+          schema:
+            type: integer
+        - name: b
+          in: query
+          description: operand b of the division
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        default:
+          $ref: "#/components/responses/Error"
+servers:
+  - url: http://localhost:3000/api/calculator
+components:
+  responses:
+    Success:
+      description: Success Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ResultResponse"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/ResultResponse"
+    Error:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    ResultResponse:
+      required:
+        - result
+      properties:
+        message:
+          type: number
+    ErrorResponse:
+      type: object
