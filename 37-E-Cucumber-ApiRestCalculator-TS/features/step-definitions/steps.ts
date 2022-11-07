@@ -1,42 +1,73 @@
 import assert from "assert";
+import superagent from 'superagent'
 
 import { Given, When, Then } from "@cucumber/cucumber";
-import { Calculator } from '../../src/Calculator'
 
-interface MyWorld {
-  whatIHeard: string;
+// Loading the index main
+import { init, stop } from '../../src/index'
+
+enum OPERATIONS {
+  SUM = 'sum',
+  SUBSTRACT = 'substract',
+  MULTIPLY = 'multiply',
+  DIVIDE = 'divide'
 }
 
-Given('a calculator', function () {
-  this.calculator = new Calculator();
+interface MyWorld {
+  x: number,
+  y: number,
+  operation: OPERATIONS
+  initiated: boolean,
+}
+
+Given('an API REST Calculator', function () {
+  init()
 });
 
-When('we want to execute {float} plus {float}', function (x, y) {
-  this.result = this.calculator.sum(x, y);
+When('we want to sum {float} and {float}', function (this: MyWorld, x: number, y: number) {
+  this.x = x
+  this.y = y
+  this.operation = OPERATIONS.SUM
 });
 
-When('we want to execute {float} minus {float}', function (x, y) {
-  this.result = this.calculator.substract(x, y);
+When('we want to execute {float} minus {float}', function (this: MyWorld, x: number, y: number) {
+  this.x = x
+  this.y = y
+  this.operation = OPERATIONS.SUBSTRACT
 });
 
-When('we want to execute {float} multiplied by {float}', function (x, y) {
-  this.result = this.calculator.multiply(x, y);
+When('we want to execute {float} multiplied by {float}', function (this: MyWorld, x: number, y: number) {
+  this.x = x
+  this.y = y
+  this.operation = OPERATIONS.MULTIPLY
 });
 
-When('we want to execute {float} divided by {float}', function (x, y) {
-  try {
-    this.result = this.calculator.divide(x, y);
-  } catch (error) {
-    if (error instanceof Error) {
-      this.errorMessage = error.message;
-    }
-  }
+When('we want to execute {float} divided by {float}', function (this: MyWorld, x: number, y: number) {
+  this.x = x
+  this.y = y
+  this.operation = OPERATIONS.DIVIDE
 });
 
-Then('the result must be {float}', function (expectedResponse) {
-  assert.strictEqual(this.result, expectedResponse);
+When('we want to stop the server', function () {
+  // Nothing to do
 });
 
-Then('should receive this error: You can not divide by zero!', function () {
-  assert.strictEqual(this.errorMessage, 'You can not divide by zero!');
+
+Then('the result must be {float}', async function (this: MyWorld, expectedResult: number) {
+  const result = await superagent.get(`http://localhost:3000/${this.operation}?a=${this.x}&b=${this.y}`)
+  return assert.equal(result.body.result, expectedResult);
 });
+
+Then('the result must have the next error message {string}', async function (this: MyWorld, expectedResult: string) {
+    const uri = `http://localhost:3000/${this.operation}?a=${this.x}&b=${this.y}`
+    // Handle the 400 responses as valid responses
+    const result = await superagent.get(uri).ok(res => res.status === 400)
+    return assert.equal(result.body.message, expectedResult);
+});
+
+Then('the server must be stopped', function () {
+  // Write code here that turns the phrase above into concrete actions
+  stop();
+});
+
+
