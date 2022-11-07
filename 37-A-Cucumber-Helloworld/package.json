@@ -4,7 +4,7 @@
   "description": "Cucumber helloworld in javascript",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/cucumber -p default"
+    "test": "./node_modules/.bin/cucumber-js -p default"
   },
   "author": "",
   "license": "ISC",

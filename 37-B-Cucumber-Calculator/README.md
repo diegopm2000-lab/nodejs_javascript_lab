@@ -13,12 +13,30 @@ npm i
 
 ## 2. Run the bdd tests
 
+### 2.1 Running cucumber-js using npx
+
 Execute this:
 
 ```shell
 npx cucumber-js
 
-1 scenario (1 passed)
-2 steps (2 passed)
-0m00.008s (executing steps: 0m00.000s)
+.............................................
+
+15 scenarios (15 passed)
+45 steps (45 passed)
+0m00.028s (executing steps: 0m00.002s)
+```
+
+### 2.2 Running tests
+
+Execute this:
+
+```shell
+npm run test
+
+.............................................
+
+15 scenarios (15 passed)
+45 steps (45 passed)
+0m00.028s (executing steps: 0m00.002s)
 ```
