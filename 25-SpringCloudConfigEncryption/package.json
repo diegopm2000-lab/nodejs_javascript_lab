@@ -10,6 +10,6 @@
   "author": "Diego Perez Molinero",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.0"
+    "axios": "^0.21.1"
   }
 }
